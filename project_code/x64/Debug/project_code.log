@@ -1,0 +1,43 @@
+﻿  tutorial1.cpp
+tutorial1.obj : error LNK2019: unresolved external symbol __imp___acrt_iob_func referenced in function printf
+tutorial1.obj : error LNK2019: unresolved external symbol __imp___stdio_common_vfprintf referenced in function _vfprintf_l
+tutorial1.obj : error LNK2019: unresolved external symbol __imp_exit referenced in function glutCreateWindow_ATEXIT_HACK
+tutorial1.obj : error LNK2019: unresolved external symbol __imp_glClear referenced in function "void __cdecl renderFun(void)" (?renderFun@@YAXXZ)
+tutorial1.obj : error LNK2019: unresolved external symbol __imp_glClearColor referenced in function "void __cdecl renderFun(void)" (?renderFun@@YAXXZ)
+tutorial1.obj : error LNK2019: unresolved external symbol __imp_glFlush referenced in function "void __cdecl renderFun(void)" (?renderFun@@YAXXZ)
+tutorial1.obj : error LNK2019: unresolved external symbol __imp_glGetString referenced in function main
+tutorial1.obj : error LNK2019: unresolved external symbol __imp_glewInit referenced in function main
+tutorial1.obj : error LNK2019: unresolved external symbol __imp_glewGetErrorString referenced in function main
+tutorial1.obj : error LNK2019: unresolved external symbol __imp_glutInitWindowPosition referenced in function main
+tutorial1.obj : error LNK2019: unresolved external symbol __imp_glutInitWindowSize referenced in function main
+tutorial1.obj : error LNK2019: unresolved external symbol __imp_glutInitDisplayMode referenced in function main
+tutorial1.obj : error LNK2019: unresolved external symbol __imp_glutMainLoop referenced in function main
+tutorial1.obj : error LNK2019: unresolved external symbol __imp_glutDisplayFunc referenced in function main
+tutorial1.obj : error LNK2019: unresolved external symbol __imp___glutInitWithExit referenced in function glutInit_ATEXIT_HACK
+tutorial1.obj : error LNK2019: unresolved external symbol __imp___glutCreateWindowWithExit referenced in function glutCreateWindow_ATEXIT_HACK
+tutorial1.obj : error LNK2019: unresolved external symbol _RTC_CheckStackVars referenced in function printf
+tutorial1.obj : error LNK2001: unresolved external symbol _RTC_InitBase
+tutorial1.obj : error LNK2001: unresolved external symbol _RTC_Shutdown
+tutorial1.obj : error LNK2001: unresolved external symbol __GSHandlerCheck
+tutorial1.obj : error LNK2019: unresolved external symbol __security_check_cookie referenced in function printf
+tutorial1.obj : error LNK2019: unresolved external symbol __security_cookie referenced in function printf
+tutorial1.obj : error LNK2001: unresolved external symbol _fltused
+LINK : error LNK2001: unresolved external symbol mainCRTStartup
+C:\Program Files (x86)\Windows Kits\10\lib\10.0.22000.0\um\x86\kernel32.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Windows Kits\10\lib\10.0.22000.0\um\x86\user32.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Windows Kits\10\lib\10.0.22000.0\um\x86\gdi32.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Windows Kits\10\lib\10.0.22000.0\um\x86\winspool.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Windows Kits\10\lib\10.0.22000.0\um\x86\comdlg32.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Windows Kits\10\lib\10.0.22000.0\um\x86\advapi32.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Windows Kits\10\lib\10.0.22000.0\um\x86\shell32.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Windows Kits\10\lib\10.0.22000.0\um\x86\ole32.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Windows Kits\10\lib\10.0.22000.0\um\x86\oleaut32.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Windows Kits\10\lib\10.0.22000.0\um\x86\uuid.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Windows Kits\10\lib\10.0.22000.0\um\x86\odbc32.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Windows Kits\10\lib\10.0.22000.0\um\x86\odbccp32.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+H:\Downloads\School\Year5\comp3009\tutorials\shared_gl\lib\freeglut.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Windows Kits\10\lib\10.0.22000.0\um\x86\glu32.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Windows Kits\10\lib\10.0.22000.0\um\x86\opengl32.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files (x86)\Windows Kits\10\lib\10.0.22000.0\um\x86\winmm.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.35.32215\lib\x86\MSVCRTD.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+H:\Downloads\School\Year5\comp3009\project\COMP3009-Project\project_code\x64\Debug\project_code.exe : fatal error LNK1120: 24 unresolved externals
