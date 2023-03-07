@@ -175,3 +175,14 @@ void Cube::initGeom()
 	};	
 	memcpy((void *)vtx, (void *)v, sizeof(v));
 }
+
+void Cube::initShader() {
+	char vtxShader[] = "squishShader.vert";
+	char fragShader[] = "squishShader.frag";
+	
+	cubeShader.createShaders(vtxShader, fragShader);
+
+	/*glGenBuffers(1, &cubeShader.vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, cubeShader.vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vtx), vtx, GL_STATIC_DRAW);*/
+}
