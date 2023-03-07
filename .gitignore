@@ -9,4 +9,5 @@
 .*
 /project_code/Debug/*
 /project_code/x64/*
+/project_code/.vs/*
 !/.gitignore

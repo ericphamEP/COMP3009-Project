@@ -6,6 +6,8 @@
 
 void Squish::initGeom(char* filepath)
 {
+    bottomPosition = NULL;
+
     m_vertices.reserve(1000000);
     m_indices_tri.reserve(1000000);
     m_indices_quad.reserve(1000000);
@@ -28,6 +30,10 @@ void Squish::initGeom(char* filepath)
             }
             
             m_vertices.push_back(vertex);
+
+            if (bottomPosition == NULL || bottomPosition > vertex.pos.y) {
+                bottomPosition = vertex.pos.y;
+            }
         } else if (line.substr(0, 2) == "vt") { //check for texture co-ordinate
 
             //todo
@@ -65,8 +71,42 @@ void Squish::initGeom(char* filepath)
 
     }
 
+    // set position to 'floor'
+    position = Vector3f(0, bottomPosition, 0);
+
 }
 
+
+void Squish::setScale(float scaleX, float scaleY, float scaleZ)
+{
+    this->scale = Vector3f(scaleX, scaleY, scaleZ);
+    this->initScale = Vector3f(scaleX, scaleY, scaleZ);
+}
+
+
+
+void Squish::updateSquish(float factor)
+{
+    if (squishDown == true) {
+        scale.y -= scale.y * 0.05 * factor;
+        scale.x += scale.x * 0.035 * factor;
+        scale.z += scale.z * 0.035 * factor;
+
+        if (scale.y < (0.5 * initScale.y)) {
+            squishDown = false;
+        }
+    } else {
+        scale.y += scale.y * 0.05 * factor;
+        scale.x -= scale.x * 0.035 * factor;
+        scale.z -= scale.z * 0.035 * factor;
+
+        if (scale.y >= initScale.y) {
+            scale = initScale;
+            squishDown = true;
+        }
+    }
+    
+}
 
 
 
@@ -82,7 +122,20 @@ int Squish::render()
     Vector4f p;
     Vector4f c;
 
+    Matrix4f scaleMat; // scaling matrix;
+    Matrix4f transMat;	// translation matrix
+    Matrix4f modelMat;	// final model matrix
     Matrix4f trMat;	// world matrix
+
+    modelMat = Matrix4f::identity();
+
+    // set the translation - this is model space to world space transformation
+    transMat = Matrix4f::translation(position);
+    modelMat = transMat * modelMat;
+
+    // set the scaling - this is model space to model space transformation
+    scaleMat = Matrix4f::scale(scale.x, scale.y, scale.z);
+    modelMat = scaleMat * modelMat;
 
     // compute the transaformation and store it in trMat
     trMat = worldMat * modelMat;

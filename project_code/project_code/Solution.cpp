@@ -192,7 +192,7 @@ int Solution::initSolution(char* objectFilePath)
 	c.initShader();
 
 	squish.initGeom(objectFilePath);
-	squish.setModelScale(6, 6, 6);
+	squish.setScale(6, 6, 6);
 
 
 	// set the camera initial position
@@ -372,6 +372,7 @@ int Solution::updateObjects(int numFrames)
 	//testSphere.incrementRotations(0.5, 0, 0);
 	t.incrementRotations(0, 0, 0.5);
 	c.incrementRotations(0.5, 0, 0.5);
+	squish.updateSquish(3);
 	glutPostRedisplay();
 	return 0;
 }
