@@ -42,6 +42,9 @@
     <ClCompile Include="project_code\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="project_code\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="project_code\box.h">
@@ -77,5 +80,16 @@
     <ClInclude Include="project_code\Triangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="project_code\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="project_code\squishShader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="project_code\squishShader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

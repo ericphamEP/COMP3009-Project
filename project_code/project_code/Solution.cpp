@@ -189,6 +189,7 @@ int Solution::initSolution()
 	// create one cube
 	c.setInitialPosition(-20, 0, -5);
 	c.setScale(5, 5, 5);
+	c.initShader();
 
 	squish.initGeom();
 	squish.setModelScale(12, 12, 12);
@@ -201,6 +202,8 @@ int Solution::initSolution()
 
 	return 0;
 }
+
+
 
 
 /**********************************************************************/

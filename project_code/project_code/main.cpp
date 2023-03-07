@@ -15,6 +15,7 @@ int main(int argc, char* argv[])
 	sol.initOpenGL();
 	sol.initSolution();
 	Solution::setSolution(&sol);
+	
 
 	glutMainLoop();
 	return 0;

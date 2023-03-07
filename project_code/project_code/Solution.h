@@ -75,7 +75,6 @@ public:
 	int initSolution();
 
 
-
 	
 
 	void render();

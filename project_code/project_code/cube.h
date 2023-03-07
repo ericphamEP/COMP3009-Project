@@ -1,7 +1,7 @@
 #pragma once
 #include "geometry_common.h"
 #include "GL/nuss_math.h"
-
+#include "Shader.h"
 
 
 
@@ -18,7 +18,7 @@ public:
 	void incrementRotations(float rollAngle, float pitchAngle, float yawAngle);
 	void incrementPosition(float deltaX, float deltaY, float deltaZ);
 	void setScale(float sx, float sy, float sz);
-
+	void initShader();
 
 private:
 	VERTEX vtx[36];
@@ -28,6 +28,7 @@ private:
 	Vector3f position;
 	Vector3f scale;
 	int numIndices;
+	Shader cubeShader;
 
 	void initGeom();
 
