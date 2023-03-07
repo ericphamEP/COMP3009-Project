@@ -191,7 +191,7 @@ int Solution::initSolution(char* objectFilePath)
 	c.setScale(5, 5, 5);
 
 	squish.initGeom(objectFilePath);
-	squish.setModelScale(12, 12, 12);
+	squish.setModelScale(6, 6, 6);
 
 
 	// set the camera initial position
@@ -248,10 +248,10 @@ void Solution::render()
 
 	// render the objects
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	// triangle in fill mode
-	t.render();
+	//t.render();
 
 //	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);	// cube in wireframe mode
-	c.render();
+	//c.render();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	squish.render();

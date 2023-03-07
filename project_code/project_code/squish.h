@@ -23,6 +23,7 @@ private:
     Vertices    m_vertices;
     Indices		m_indices_tri;
     Indices		m_indices_quad;
+    Indices		m_indices_pent;
 };
 
 #endif
