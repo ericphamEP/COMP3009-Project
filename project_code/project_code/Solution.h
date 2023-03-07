@@ -72,7 +72,7 @@ public:
 
 	// generaL shader that will be used by all objects
 	// initialization of the solution
-	int initSolution();
+	int initSolution(char*);
 
 
 
@@ -90,6 +90,7 @@ private:
 	Triangle t;
 	Cube c;
 	Squish squish;
+	char* objectFilePath;
 	int numFrames;
 	static Solution *sol;
 	Camera cam;

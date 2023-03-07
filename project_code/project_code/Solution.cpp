@@ -176,7 +176,7 @@ int Solution::timer(int operation)
 
 /******************************************************************************/
 // initialization of the solution
-int Solution::initSolution()
+int Solution::initSolution(char* objectFilePath)
 {
 //	int rc;
 	Vertices vtx;
@@ -190,7 +190,7 @@ int Solution::initSolution()
 	c.setInitialPosition(-20, 0, -5);
 	c.setScale(5, 5, 5);
 
-	squish.initGeom();
+	squish.initGeom(objectFilePath);
 	squish.setModelScale(12, 12, 12);
 
 
@@ -209,8 +209,6 @@ void Solution::setSolution(Solution * _sol)
 {
 	Solution::sol = _sol;
 }
-
-
 
 /************************************************************/
 
