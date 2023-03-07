@@ -1,8 +1,1 @@
-﻿  Solution.cpp
-C:\Users\Sean\Documents\COMP3009\Project\project_code\project_code\Solution.cpp(288,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Sean\Documents\COMP3009\Project\project_code\project_code\Solution.cpp(291,32): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Sean\Documents\COMP3009\Project\project_code\project_code\Solution.cpp(300,29): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Sean\Documents\COMP3009\Project\project_code\project_code\Solution.cpp(303,28): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  main.cpp
-  Generating Code...
-  project_code.vcxproj -> C:\Users\Sean\Documents\COMP3009\Project\project_code\Debug\project_code.exe
+﻿
