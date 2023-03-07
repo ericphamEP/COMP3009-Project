@@ -14,7 +14,7 @@ public:
     Squish() {};
     ~Squish() {};
 
-    void initGeom();
+    void initGeom(char*);
     int render();
 
 
