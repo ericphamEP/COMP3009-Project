@@ -18,9 +18,6 @@
     <ClCompile Include="project_code\Triangle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="project_code\box.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="project_code\graphicsObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -45,11 +42,11 @@
     <ClCompile Include="project_code\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="project_code\hand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="project_code\box.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="project_code\graphicsObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -81,6 +78,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="project_code\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="project_code\hand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
