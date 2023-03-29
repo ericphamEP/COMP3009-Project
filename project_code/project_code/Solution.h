@@ -86,6 +86,7 @@ public:
 	int updateObjects(int numFrames);
 
 private:
+	Shader shader;
 	Triangle t;
 	Cube c;
 	Squish squish;

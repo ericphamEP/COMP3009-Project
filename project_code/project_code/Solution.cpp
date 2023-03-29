@@ -178,18 +178,31 @@ int Solution::timer(int operation)
 // initialization of the solution
 int Solution::initSolution(char* objectFilePath)
 {
-//	int rc;
+	int rc;
 	Vertices vtx;
 	Indices ind;
+
+	// create the shader object
+	//rc = shader.createShaderProgram("light_add.vert", "light_add_to_continue.frag");
+	char vtxShader[] = "squishShader.vert";
+	char fragShader[] = "squishShader.frag";
+
+	rc = shader.createShader(vtxShader, fragShader);
+	if (rc != 0) {
+		fprintf(stderr, "Error in generating shader (solution)\n");
+		rc = -1;
+		//goto err;
+	}
 
 	// create one triangle
 	t.setInitialPosition(0, 0, -5);
 	t.setScale(9, 9, 9);
 
+
+
 	// create one cube
 	c.setInitialPosition(-20, 0, -5);
 	c.setScale(5, 5, 5);
-	c.initShader();
 
 	squish.initGeom(objectFilePath);
 	squish.setScale(6, 6, 6);

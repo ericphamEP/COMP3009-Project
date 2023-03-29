@@ -18,7 +18,6 @@ public:
 	void incrementRotations(float rollAngle, float pitchAngle, float yawAngle);
 	void incrementPosition(float deltaX, float deltaY, float deltaZ);
 	void setScale(float sx, float sy, float sz);
-	void initShader();
 
 private:
 	VERTEX vtx[36];
