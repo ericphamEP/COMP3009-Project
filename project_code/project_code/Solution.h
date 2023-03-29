@@ -42,6 +42,7 @@
 
 #include "Triangle.h"
 #include "Cube.h"
+#include "Hand.h"
 #include "Squish.h"
 //
 #include "camera.h"
@@ -89,6 +90,7 @@ private:
 	Shader shader;
 	Triangle t;
 	Cube c;
+	Hand hand;
 	Squish squish;
 	char* objectFilePath;
 	int numFrames;

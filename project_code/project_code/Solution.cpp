@@ -205,8 +205,13 @@ int Solution::initSolution(char* objectFilePath)
 	c.setScale(5, 5, 5);
 
 	squish.initGeom(objectFilePath);
-	squish.setScale(6, 6, 6);
+	squish.optimizeScale();
 
+	hand.initGeom();
+	hand.setModelScale(2.5, 2.5, 2.5);
+	hand.setModelPosition(45, 0, 0);
+	hand.incrementModelRotations(90, 0, 270);
+	
 
 	// set the camera initial position
 	cam.setCamera(Vector3f(0, 0, 100), Vector3f(0, 0,0), Vector3f(0, 1, 0));
@@ -268,6 +273,10 @@ void Solution::render()
 
 //	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);	// cube in wireframe mode
 	//c.render();
+
+	// update hand position
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	hand.render();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	squish.render();
@@ -386,6 +395,7 @@ int Solution::updateObjects(int numFrames)
 	t.incrementRotations(0, 0, 0.5);
 	c.incrementRotations(0.5, 0, 0.5);
 	squish.updateSquish(3);
+	hand.setHeightPosition(squish.getTopPosition());
 	glutPostRedisplay();
 	return 0;
 }

@@ -1,79 +1,21 @@
 #include "squish.h"
-#include <iostream>
-#include <fstream>
-#include <string>
 
 
 void Squish::initGeom(char* filepath)
 {
-    bottomPosition = NULL;
+    GraphicsObject::initGeom(filepath);
+}
 
-    m_vertices.reserve(1000000);
-    m_indices_tri.reserve(1000000);
-    m_indices_quad.reserve(1000000);
-    m_indices_pent.reserve(1000000);
 
-    std::ifstream in(filepath, std::ios::in);
-    if (!in) {
-        printf("WARNING: Invalid filepath\n");
-        return;
+void Squish::optimizeScale()
+{
+    float targetHeight = 45;
+    float currHeight = topPosition;
+    printf("%f\n", currHeight);
+    float scale = targetHeight / currHeight;
+    printf("%f", scale);
 
-    }
-    std::string line;
-    while (std::getline(in, line)) {
-        // vertices
-        if (line.substr(0, 2) == "v ") {
-            Vertex vertex;
-            int matches = sscanf_s(line.c_str(), "v %f %f %f\n", &vertex.pos.x, &vertex.pos.y, &vertex.pos.z);
-            if (matches != 3) {
-                printf("WARNING: Cannot parse vertices.\n");
-            }
-            
-            m_vertices.push_back(vertex);
-
-            if (bottomPosition == NULL || bottomPosition > vertex.pos.y) {
-                bottomPosition = vertex.pos.y;
-            }
-        } else if (line.substr(0, 2) == "vt") { //check for texture co-ordinate
-
-            //todo
-
-        } else if (line.substr(0, 2) == "vn") { //check for vertex nornmal
-
-            //todo
-
-        }
-        // faces
-        else if (line.substr(0, 2) == "f ") {
-            unsigned int v[5], vt[5], vn[5];
-            int matches = sscanf_s(line.c_str(), "f %d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d\n", &v[0], &vt[0], &vn[0], &v[1], &vt[1], &vn[1], &v[2], &vt[2], &vn[2], &v[3], &vt[3], &vn[3], &v[4], &vt[4], &vn[4]);
-            if (matches == 9) { // 3 vertex face - triangle
-                for (int i = 0; i < 3; i++) {
-                    m_indices_tri.push_back(v[i] - 1);
-                }
-            }
-            else if (matches == 12) { // 4 vertex face - quad
-                for (int i = 0; i < 4; i++) {
-                    m_indices_quad.push_back(v[i] - 1);
-                }
-            }
-            else if (matches == 15) { // 5 vertex face - pent
-                for (int i = 0; i < 4; i++) {
-                    m_indices_pent.push_back(v[i] - 1);
-                }
-            }
-            else {
-                printf("WARNING: Object file cannot be imported. Try a differnt file.\n");
-                return;
-            }
-
-        }
-
-    }
-
-    // set position to 'floor'
-    position = Vector3f(0, bottomPosition, 0);
-
+    this->setScale(scale, scale, scale);
 }
 
 
@@ -82,7 +24,6 @@ void Squish::setScale(float scaleX, float scaleY, float scaleZ)
     this->scale = Vector3f(scaleX, scaleY, scaleZ);
     this->initScale = Vector3f(scaleX, scaleY, scaleZ);
 }
-
 
 
 void Squish::updateSquish(float factor)
@@ -102,10 +43,16 @@ void Squish::updateSquish(float factor)
 
         if (scale.y >= initScale.y) {
             scale = initScale;
+            setScale(initScale.x, initScale.y, initScale.z);
             squishDown = true;
         }
     }
-    
+}
+
+
+float Squish::getTopPosition()
+{
+    return scale.y * topPosition;
 }
 
 

@@ -19,10 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="project_code\box.cpp" />
     <ClCompile Include="project_code\camera.cpp" />
     <ClCompile Include="project_code\Cube.cpp" />
     <ClCompile Include="project_code\graphicsObject.cpp" />
+    <ClCompile Include="project_code\hand.cpp" />
     <ClCompile Include="project_code\Shader.cpp" />
     <ClCompile Include="project_code\Solution.cpp" />
     <ClCompile Include="project_code\squish.cpp" />
@@ -31,11 +31,11 @@
     <ClCompile Include="project_code\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="project_code\box.h" />
     <ClInclude Include="project_code\camera.h" />
     <ClInclude Include="project_code\cube.h" />
     <ClInclude Include="project_code\geometry_common.h" />
     <ClInclude Include="project_code\graphicsObject.h" />
+    <ClInclude Include="project_code\hand.h" />
     <ClInclude Include="project_code\model.h" />
     <ClInclude Include="project_code\Shader.h" />
     <ClInclude Include="project_code\Solution.h" />

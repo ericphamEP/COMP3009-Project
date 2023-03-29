@@ -41,7 +41,7 @@
 #include "GL/glut.h"
 #endif
 
-//#include "geometry_common.h"
+#include "geometry_common.h"
 #include <vector>
 #include "GL/nuss_math.h"
 
@@ -77,6 +77,13 @@ protected:
 	Matrix4f modelMat;
 	Matrix4f worldMat;
 
+	float       topPosition;
+	float       bottomPosition;
+	Vertices    m_vertices;
+	Indices		m_indices_tri;
+	Indices		m_indices_quad;
+	Indices		m_indices_pent;
+
 	 
 
 
@@ -95,6 +102,7 @@ public:
 	void setWorldPosition(Vector3f position);
 	void incrementWorldRotations(float rollAngle, float pitchAngle, float yawAngle);
 	void addChild(GraphicsObject *obj);
+	void initGeom(char* filepath);
 
 private:
 
