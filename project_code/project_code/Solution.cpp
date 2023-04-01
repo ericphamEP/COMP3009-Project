@@ -71,7 +71,7 @@ int Solution::initOpenGL()
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(512,512);
-	glutCreateWindow("Drawing Basic Objects");
+	glutCreateWindow("Petpetpet 3D Generator");
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -181,11 +181,12 @@ int Solution::initSolution(char* objectFilePath)
 	int rc;
 	Vertices vtx;
 	Indices ind;
+	pointLight point;
 
 	// create the shader object
 	//rc = shader.createShaderProgram("light_add.vert", "light_add_to_continue.frag");
-	char vtxShader[] = "squishShader.vert";
-	char fragShader[] = "squishShader.frag";
+	char vtxShader[] = "./project_code/squishShader.vert";
+	char fragShader[] = "./project_code/squishShader.frag";
 
 	rc = shader.createShader(vtxShader, fragShader);
 	if (rc != 0) {
@@ -198,24 +199,34 @@ int Solution::initSolution(char* objectFilePath)
 	t.setInitialPosition(0, 0, -5);
 	t.setScale(9, 9, 9);
 
-
-
 	// create one cube
 	c.setInitialPosition(-20, 0, -5);
 	c.setScale(5, 5, 5);
 
+	//create the squish object from model
 	squish.initGeom(objectFilePath);
 	squish.optimizeScale();
 
+	//create the hand object
 	hand.initGeom();
 	hand.setModelScale(2.5, 2.5, 2.5);
 	hand.setModelPosition(45, 0, 0);
 	hand.incrementModelRotations(90, 0, 270);
 	
-
 	// set the camera initial position
 	cam.setCamera(Vector3f(0, 0, 100), Vector3f(0, 0,0), Vector3f(0, 1, 0));
 
+	//create light(s)
+	point.ambientIntensity = Vector3f(1.0, 1.0, 1.0);
+	point.lightIntensity = Vector3f(1.0, 1.0, 1.0);
+	point.worldPos = Vector3f(240, 210, 200);
+	point.specularPower = 5;
+
+	light.setPointLight(point);
+	light.enablePointLightCompnents(1, 1, 1);
+
+
+	//set the factor
 	factor = 1;
 
 	return 0;
@@ -245,7 +256,6 @@ void Solution::render()
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_CULL_FACE);		// ensure that faces are displayed from every view point
-
 
 
 	// set the view model transformation

@@ -41,11 +41,24 @@ struct Vertex {
 		memcpy((void *)&pos, (void *)&_pos, sizeof(pos));
 		memcpy((void *)&col, (void *)&_col, sizeof(col));
 	}
+	Vertex(const Vector4f _pos, const Vector3f _normal, const Vector4f _col) {
+		memcpy((void*)&pos, (void*)&_pos, sizeof(pos));
+		memcpy((void*)&normal, (void*)&_normal, sizeof(normal));
+		memcpy((void*)&col, (void*)&_col, sizeof(col));
+	}
+
+	Vertex(const Vector4f _pos, const Vector3f _normal, const Vector4f _col, const Vector2f _texCoord) {
+		memcpy((void*)&pos, (void*)&_pos, sizeof(pos));
+		memcpy((void*)&normal, (void*)&_normal, sizeof(normal));
+		memcpy((void*)&col, (void*)&_col, sizeof(col));
+		memcpy((void*)&texCoord, (void*)&_texCoord, sizeof(texCoord));
+	}
 
 	Vector3f pos;
-
+	Vector3f normal;
 	//float pos[VERTEX_DIMENSIONS];
 	Vector4f col;
+	Vector2f texCoord;
 };
 
 typedef struct Vertex VERTEX;

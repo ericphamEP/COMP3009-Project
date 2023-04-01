@@ -3,7 +3,7 @@
 
 void Hand::initGeom()
 {
-    char filepath[] = "H:\\Downloads\\School\\Year5\\comp3009\\project\\models\\female-hand\\source\\038F_05SET_04SHOT\\038F_05SET_04SHOT.OBJ";
+    char filepath[] = "./project_code/models/female-hand/source/038F_05SET_04SHOT/038F_05SET_04SHOT.OBJ";
     GraphicsObject::initGeom(filepath);
 }
 

@@ -23,10 +23,12 @@
     <ClCompile Include="project_code\Cube.cpp" />
     <ClCompile Include="project_code\graphicsObject.cpp" />
     <ClCompile Include="project_code\hand.cpp" />
+    <ClCompile Include="project_code\Light.cpp" />
     <ClCompile Include="project_code\Shader.cpp" />
     <ClCompile Include="project_code\Solution.cpp" />
     <ClCompile Include="project_code\squish.cpp" />
     <ClCompile Include="project_code\stdafx.cpp" />
+    <ClCompile Include="project_code\Texture.cpp" />
     <ClCompile Include="project_code\Triangle.cpp" />
     <ClCompile Include="project_code\main.cpp" />
   </ItemGroup>
@@ -36,17 +38,23 @@
     <ClInclude Include="project_code\geometry_common.h" />
     <ClInclude Include="project_code\graphicsObject.h" />
     <ClInclude Include="project_code\hand.h" />
+    <ClInclude Include="project_code\Light.h" />
     <ClInclude Include="project_code\model.h" />
     <ClInclude Include="project_code\Shader.h" />
     <ClInclude Include="project_code\Solution.h" />
     <ClInclude Include="project_code\squish.h" />
     <ClInclude Include="project_code\stdafx.h" />
     <ClInclude Include="project_code\targetver.h" />
+    <ClInclude Include="project_code\Texture.h" />
     <ClInclude Include="project_code\Triangle.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="project_code\light.frag" />
+    <None Include="project_code\light.vert" />
     <None Include="project_code\squishShader.frag" />
     <None Include="project_code\squishShader.vert" />
+    <None Include="project_code\textureShader.frag" />
+    <None Include="project_code\textureShader.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -118,7 +126,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freeglut.lib;glew32.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;glew32s.lib;opengl32.lib;soil.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

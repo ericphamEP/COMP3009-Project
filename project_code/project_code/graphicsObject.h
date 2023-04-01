@@ -44,6 +44,7 @@
 #include "geometry_common.h"
 #include <vector>
 #include "GL/nuss_math.h"
+#include "Shader.h"
 
 class GraphicsObject
 {
@@ -51,8 +52,12 @@ public:
 	GraphicsObject();
 	virtual ~GraphicsObject();
 
+	int createVAO(Shader shader);
+	int createVAO(Shader shader, Vertices vtx, Indices ind);
+
 	virtual int render();
 	virtual int render(Matrix4f worldMat);
+	virtual int render(Shader shader);
 	virtual void update() {};
 
 
@@ -84,7 +89,11 @@ protected:
 	Indices		m_indices_quad;
 	Indices		m_indices_pent;
 
-	 
+	GLuint vtxVBO;  // the vertex buffer object which holds the vertices data
+	GLuint vao;  // the vertex array object which holds all the data required for renderring.
+	GLuint indVBO;	// index buffer for drawing the geometry
+
+	int numIndices;
 
 
 public:

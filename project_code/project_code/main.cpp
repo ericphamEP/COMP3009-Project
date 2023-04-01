@@ -8,7 +8,7 @@
 int main(int argc, char* argv[])
 {
 
-	char objectFilePath[] = "H:\\Downloads\\School\\Year5\\comp3009\\project\\models\\pikachu\\source\\pikaku\\model_170290017759.obj";
+	char objectFilePath[] = "./project_code//models/pikachu/source/model_170290017759.obj";
 	//char objectFilePath[] = "H:\\Downloads\\School\\Year5\\comp3009\\project\\models\\fat-pikachu\\source\\fat pikachu\\pikachu gordo.obj";
 
 	Solution sol;

@@ -46,7 +46,8 @@
 #include "Squish.h"
 //
 #include "camera.h"
-
+#include "Light.h"
+#include "Texture.h"
 
 
 
@@ -74,8 +75,6 @@ public:
 	// generaL shader that will be used by all objects
 	// initialization of the solution
 	int initSolution(char*);
-
-
 	
 
 	void render();
@@ -97,7 +96,8 @@ private:
 	static Solution *sol;
 	Camera cam;
 	int factor;		// speeds up the actions
-
+	Light light;
+	Texture squishTexture;
 };
 
 
