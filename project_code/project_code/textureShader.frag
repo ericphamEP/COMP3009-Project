@@ -10,5 +10,6 @@ in Data{
 out vec4 color;
 
 void main() {
-	color = texture2D(texSampler1, In.texCoord);
+	vec2 textureCoordinates = vec2(In.texCoord.x, 1.0-In.texCoord.y);
+	color = texture2D(texSampler, textureCoordinates);
 }

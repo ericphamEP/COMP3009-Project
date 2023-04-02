@@ -46,6 +46,20 @@
 #include "GL/nuss_math.h"
 #include "Shader.h"
 
+
+/******************************************************************/
+// STRUCTURES
+typedef struct materials {
+	Vector3f ambientMaterial;		// ambient material properties
+	Vector3f diffuseMaterial;		// diffuse material properties
+	Vector3f specularMaterial;		// specular material properties
+	Vector3f interalRadiation;		// internal radiation of colour;
+} MATERIALS;
+
+
+/*********************************************************************/
+
+
 class GraphicsObject
 {
 public:
@@ -53,7 +67,6 @@ public:
 	virtual ~GraphicsObject();
 
 	int createVAO(Shader shader);
-	int createVAO(Shader shader, Vertices vtx, Indices ind);
 
 	virtual int render();
 	virtual int render(Matrix4f worldMat);
@@ -94,6 +107,9 @@ protected:
 	GLuint indVBO;	// index buffer for drawing the geometry
 
 	int numIndices;
+	MATERIALS materials;
+
+	virtual int loadMaterials(Shader shader);
 
 
 public:

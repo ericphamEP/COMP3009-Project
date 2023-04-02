@@ -97,7 +97,7 @@ private:
 	Camera cam;
 	int factor;		// speeds up the actions
 	Light light;
-	Texture squishTexture;
+	Texture squishTexture, handTexture;
 };
 
 

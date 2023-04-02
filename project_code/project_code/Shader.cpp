@@ -58,7 +58,7 @@ Shader::~Shader(void)
 /******************************************************************/
 char* Shader::readCode(char* fileName)
 {
-	printf("Read file: %s\n", fileName);
+	//printf("Read file: %s\n", fileName);
 	char* shaderCode = NULL;
 	int codeLength = 0;
 	FILE* fp = NULL;
@@ -245,8 +245,8 @@ return:
 
 int Shader::createShader(char * vsFileName, char * fsFileName)
 {
-	std::cout << "Vtx shader: " << vsFileName << std::endl;
-	std::cout << "Frag shader: " << fsFileName << std::endl;
+	//std::cout << "Vtx shader: " << vsFileName << std::endl;
+	//std::cout << "Frag shader: " << fsFileName << std::endl;
 
 	int rc = 0;
 	rc = createShaderObj(vsFileName, GL_VERTEX_SHADER, &vertShaderid);
@@ -385,8 +385,11 @@ This is a helper function since this operation is used quite often
 int Shader::copyMatrixToShader(Matrix4f matrix, const char* name) {
 	int location;
 	location = glGetUniformLocation(getProgId(), name);
+	if (location == -1) { 
+		printf("Could not find uniform Matrix %s\n", name);
+		return (-1); 
+	}
 	assert(location != -1);
-	if (location == -1) return (-1);
 	glUniformMatrix4fv(location, 1, true, matrix.data());
 	return(0);
 }

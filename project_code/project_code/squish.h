@@ -19,6 +19,7 @@ public:
     void updateSquish(float);
     float getTopPosition();
     int render();
+    int render(Shader shader);
 
 
 

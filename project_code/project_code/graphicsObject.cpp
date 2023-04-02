@@ -58,6 +58,10 @@ GraphicsObject::GraphicsObject() :
 	indVBO(-1),
 	numIndices(0)
 {
+	materials.ambientMaterial = Vector3f(0.2, 0.2, 0.2);
+	materials.diffuseMaterial = Vector3f(0.75, 0.75, 0.75);
+	materials.interalRadiation = Vector3f(0.5, 0.5, 0.5);
+	materials.specularMaterial = Vector3f(0.8, 0.8, 0.8);
 	m_children.resize(0);
 }
 
@@ -73,17 +77,7 @@ GraphicsObject::~GraphicsObject()
 /***************************************************************************/
 
 
-
 int GraphicsObject::createVAO(Shader shader)
-{
-	return 0;
-}
-
-
-/***************************************************************************/
-
-
-int GraphicsObject::createVAO(Shader shader, Vertices vtx, Indices ind)
 {
 	int rc = 0;
 	Vertex v;
@@ -97,7 +91,10 @@ int GraphicsObject::createVAO(Shader shader, Vertices vtx, Indices ind)
 	//create vertex buffer object
 	glGenBuffers(1, &vtxVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, vtxVBO);
-	glBufferData(GL_ARRAY_BUFFER, vtx.size() * sizeof(Vertex), vtx.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vertex), m_vertices.data(), GL_STATIC_DRAW);
+
+	//size of object
+	printf("Number of Vertices: %d\tNumber of Indices: %d\n", (int)(m_vertices.size()), (int)(m_indices_tri.size()));
 
 	//set the vertex position
 	location = glGetAttribLocation(shader.getProgId(), "vtxPos");
@@ -150,9 +147,9 @@ int GraphicsObject::createVAO(Shader shader, Vertices vtx, Indices ind)
 	//create index buffer
 	glGenBuffers(1, &indVBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indVBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, ind.size() * sizeof(GLuint), ind.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices_tri.size() * sizeof(GLuint), m_indices_tri.data(), GL_STATIC_DRAW);
 	// store the number of indices
-	numIndices = ind.size();
+	numIndices = m_indices_tri.size();
 
 	//end creation
 	glBindVertexArray(0);
@@ -161,6 +158,20 @@ err:
 	return(rc);
 }
 
+
+/*********************************************************************************/
+
+
+int GraphicsObject::loadMaterials(Shader shader)
+
+{
+	shader.copyFloatVectorToShader((float*)&materials.ambientMaterial, 1, 3, "gMaterial.ambientMaterial");
+	shader.copyFloatVectorToShader((float*)&materials.diffuseMaterial, 1, 3, "gMaterial.diffuseMaterial");
+	shader.copyFloatVectorToShader((float*)&materials.specularMaterial, 1, 3, "gMaterial.specularMaterial");
+	shader.copyFloatVectorToShader((float*)&materials.interalRadiation, 1, 3, "gMaterial.interalRadiation");
+
+	return(0);
+}
 
 /*********************************************************************************/
 
@@ -266,7 +277,8 @@ int GraphicsObject::render(Shader shader)
 	// move matrix to shader
 	shader.copyMatrixToShader(modelMat, "model");
 
-
+	// load the object materials
+	loadMaterials(shader);
 
 	// bind the vao
 	glBindVertexArray(vao);
@@ -487,7 +499,8 @@ void GraphicsObject::initGeom(char* filepath)
 	std::vector<Vector2f> textureCoordinates; // simple implementation: put all vtx coords in here then connect them during f part
 	textureCoordinates.reserve(1000000);
 
-	int count = 0;
+	std::vector<Vector3f> vertexNormals; // simple implementation: put all vtx coords in here then connect them during f part
+	vertexNormals.reserve(1000000);
 
 	std::ifstream in(filepath, std::ios::in);
 	if (!in) {
@@ -520,13 +533,15 @@ void GraphicsObject::initGeom(char* filepath)
 			if (matches != 2) {
 				printf("WARNING: Cannot parse texture coordinates.\n");
 			}
-			
 			textureCoordinates.push_back(tempCoords);
 		}
-		else if (line.substr(0, 2) == "vn") { //check for vertex nornmal
-
-			//todo
-
+		else if (line.substr(0, 2) == "vn") { //check for vertex normal
+			Vector3f tempNormal;
+			int matches = sscanf_s(line.c_str(), "vn %f %f %f\n", &tempNormal.x, &tempNormal.y, &tempNormal.z);
+			if (matches != 3) {
+				printf("WARNING: Cannot parse vertex normals.\n");
+			}
+			vertexNormals.push_back(tempNormal);
 		}
 		// faces
 		else if (line.substr(0, 2) == "f ") {
@@ -535,6 +550,8 @@ void GraphicsObject::initGeom(char* filepath)
 			if (matches == 9) { // 3 vertex face - triangle
 				for (int i = 0; i < 3; i++) {
 					m_indices_tri.push_back(v[i] - 1);
+					m_vertices[v[i] - 1].texCoord = textureCoordinates[vt[i] - 1];
+					m_vertices[v[i] - 1].normal = vertexNormals[vn[i] - 1];
 				}
 			}
 			else if (matches == 12) { // 4 vertex face - quad
@@ -546,10 +563,23 @@ void GraphicsObject::initGeom(char* filepath)
 				m_indices_tri.push_back(v[0] - 1);
 				m_indices_tri.push_back(v[1] - 1);
 				m_indices_tri.push_back(v[2] - 1);
+				
 				//triangle 2
 				m_indices_tri.push_back(v[0] - 1);
 				m_indices_tri.push_back(v[2] - 1);
 				m_indices_tri.push_back(v[3] - 1);
+				
+				//texture coords
+				m_vertices[v[0] - 1].texCoord = textureCoordinates[vt[0] - 1];
+				m_vertices[v[1] - 1].texCoord = textureCoordinates[vt[1] - 1];
+				m_vertices[v[2] - 1].texCoord = textureCoordinates[vt[2] - 1];
+				m_vertices[v[3] - 1].texCoord = textureCoordinates[vt[3] - 1];
+
+				//vertex normals
+				m_vertices[v[0] - 1].normal = vertexNormals[vn[0] - 1];
+				m_vertices[v[1] - 1].normal = vertexNormals[vn[1] - 1];
+				m_vertices[v[2] - 1].normal = vertexNormals[vn[2] - 1];
+				m_vertices[v[3] - 1].normal = vertexNormals[vn[3] - 1];
 			}
 			else if (matches == 15) { // 5 vertex face - pent
 				for (int i = 0; i < 4; i++) {
@@ -566,8 +596,8 @@ void GraphicsObject::initGeom(char* filepath)
 	}
 
 	printf("\nThere are %d triangles, %d quads and %d pents.\n", (int)m_indices_tri.size(), (int)m_indices_quad.size(), (int)m_indices_pent.size());
-	printf("Texture coordinate count: %d\n", count);
 	// set y position to 'floor'
 	position = Vector3f(0, -bottomPosition, 0);
 	topPosition -= bottomPosition;
+
 }

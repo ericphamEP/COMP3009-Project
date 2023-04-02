@@ -38,7 +38,7 @@
 #include "Solution.h"
 
 
-#define NORMAL_SPEED 0.5
+#define NORMAL_SPEED 2.0
 #define MAX_SPEED 2.0
 
 
@@ -185,8 +185,8 @@ int Solution::initSolution(char* objectFilePath)
 
 	// create the shader object
 	//rc = shader.createShaderProgram("light_add.vert", "light_add_to_continue.frag");
-	char vtxShader[] = "./project_code/squishShader.vert";
-	char fragShader[] = "./project_code/squishShader.frag";
+	char vtxShader[] = "./project_code/light.vert";
+	char fragShader[] = "./project_code/light.frag";
 
 	rc = shader.createShader(vtxShader, fragShader);
 	if (rc != 0) {
@@ -206,12 +206,14 @@ int Solution::initSolution(char* objectFilePath)
 	//create the squish object from model
 	squish.initGeom(objectFilePath);
 	squish.optimizeScale();
+	squish.createVAO(shader);
 
 	//create the hand object
 	hand.initGeom();
 	hand.setModelScale(2.5, 2.5, 2.5);
 	hand.setModelPosition(45, 0, 0);
 	hand.incrementModelRotations(90, 0, 270);
+	hand.createVAO(shader);
 	
 	// set the camera initial position
 	cam.setCamera(Vector3f(0, 0, 100), Vector3f(0, 0,0), Vector3f(0, 1, 0));
@@ -225,6 +227,9 @@ int Solution::initSolution(char* objectFilePath)
 	light.setPointLight(point);
 	light.enablePointLightCompnents(1, 1, 1);
 
+	//load the textures
+	squishTexture.loadTexture("./project_code/models/pikachu/textures/texture_170290017759.jpeg", GL_TEXTURE_2D);
+	handTexture.loadTexture("./project_code/models/female-hand/textures/038F_05SET_04SHOT_DIFFUSE.png", GL_TEXTURE_2D);
 
 	//set the factor
 	factor = 1;
@@ -252,44 +257,58 @@ void Solution::render()
 
 	Matrix4f viewMat, projMat;
 	
-	// OpenGL 
-	glClearColor(0, 0, 0, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glDisable(GL_CULL_FACE);		// ensure that faces are displayed from every view point
+	shader.useProgram(1);
 
+	// OpenGL 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glDisable(GL_CULL_FACE);		// ensure that faces are displayed from every view point
 
 	// set the view model transformation
-	glMatrixMode(GL_MODELVIEW);
 	viewMat = cam.getViewMatrix(NULL);	// get the camera view transformation
+	// move matrix to shader
+	shader.copyMatrixToShader(viewMat, "view");
+
+	light.loadPointLight(shader);
+
+	Vector3f tempPos = cam.getPosition();
+	shader.copyFloatVectorToShader((float*)&tempPos, 1, 3, "gEyeWorldPos");
 
 	// pass it to opengl before draw
-	viewMat = Matrix4f::transpose(viewMat);
+	//viewMat = Matrix4f::transpose(viewMat);
 	//viewMat = Matrix4f::identity();
-	glLoadMatrixf((GLfloat *)viewMat.data());
+	//glLoadMatrixf((GLfloat *)viewMat.data());
 
 
 	// set the projection matrix
 	projMat = cam.getProjectionMatrix(NULL);
+	// move matrix to shader
+	shader.copyMatrixToShader(projMat, "projection");
 
-	glMatrixMode(GL_PROJECTION);
+	//glMatrixMode(GL_PROJECTION);
 	// pass it to opengl - Note that OpenGL accepts the matrix in column major
-	projMat = Matrix4f::transpose(projMat);
-	glLoadMatrixf((GLfloat *)projMat.data());
+	//projMat = Matrix4f::transpose(projMat);
+	//glLoadMatrixf((GLfloat *)projMat.data());
 
+
+	// load the texture unit to the shade
+	//squishTexture.bindToTextureUnit(GL_TEXTURE1);
+	//squishTexture.setTextureSampler(shader, "texSampler", GL_TEXTURE1);
+	
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	//squish.render(shader);
 
 	// render the objects
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	// triangle in fill mode
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	// triangle in fill mode
 	//t.render();
 
 //	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);	// cube in wireframe mode
 	//c.render();
 
 	// update hand position
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	hand.render();
-
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	squish.render();
+	handTexture.bindToTextureUnit(GL_TEXTURE1);
+	handTexture.setTextureSampler(shader, "texSampler", GL_TEXTURE1);
+	
+	hand.render(shader);
 
 	glutSwapBuffers();
 }

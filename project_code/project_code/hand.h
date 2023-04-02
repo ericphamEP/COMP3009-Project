@@ -13,6 +13,7 @@ public:
     void initGeom();
     void setHeightPosition(float height);
     int render();
+    int render(Shader shader);
 
 private:
     float       bottomPosition;
