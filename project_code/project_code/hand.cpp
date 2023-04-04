@@ -206,7 +206,6 @@ int Hand::render(Shader shader)
     // note that we always multiply the new matrix on the left
     modelMat = rotMat * modelMat;
 
-
     // set the translation - this is model space to world space transformation
     transMat = Matrix4f::translation(position);
     modelMat = transMat * modelMat;

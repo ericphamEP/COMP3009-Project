@@ -555,9 +555,6 @@ void GraphicsObject::initGeom(char* filepath)
 				}
 			}
 			else if (matches == 12) { // 4 vertex face - quad
-				/*for (int i = 0; i < 4; i++) {
-					m_indices_quad.push_back(v[i] - 1);
-				}*/
 				//split quads into 2 triangles
 				//triangle 1
 				m_indices_tri.push_back(v[0] - 1);
@@ -568,22 +565,31 @@ void GraphicsObject::initGeom(char* filepath)
 				m_indices_tri.push_back(v[0] - 1);
 				m_indices_tri.push_back(v[2] - 1);
 				m_indices_tri.push_back(v[3] - 1);
-				
-				//texture coords
-				m_vertices[v[0] - 1].texCoord = textureCoordinates[vt[0] - 1];
-				m_vertices[v[1] - 1].texCoord = textureCoordinates[vt[1] - 1];
-				m_vertices[v[2] - 1].texCoord = textureCoordinates[vt[2] - 1];
-				m_vertices[v[3] - 1].texCoord = textureCoordinates[vt[3] - 1];
 
-				//vertex normals
-				m_vertices[v[0] - 1].normal = vertexNormals[vn[0] - 1];
-				m_vertices[v[1] - 1].normal = vertexNormals[vn[1] - 1];
-				m_vertices[v[2] - 1].normal = vertexNormals[vn[2] - 1];
-				m_vertices[v[3] - 1].normal = vertexNormals[vn[3] - 1];
+				for (int i = 0; i < 4; i++) {
+					m_vertices[v[i] - 1].texCoord = textureCoordinates[vt[i] - 1];
+					m_vertices[v[i] - 1].normal = vertexNormals[vn[i] - 1];
+				}
 			}
 			else if (matches == 15) { // 5 vertex face - pent
-				for (int i = 0; i < 4; i++) {
-					m_indices_pent.push_back(v[i] - 1);
+				//split pentagons into 3 triangles
+				//triangle 1
+				m_indices_tri.push_back(v[0] - 1);
+				m_indices_tri.push_back(v[1] - 1);
+				m_indices_tri.push_back(v[2] - 1);
+				//triangle 2
+				m_indices_tri.push_back(v[0] - 1);
+				m_indices_tri.push_back(v[2] - 1);
+				m_indices_tri.push_back(v[3] - 1);
+				//triangle 3
+				m_indices_tri.push_back(v[0] - 1);
+				m_indices_tri.push_back(v[3] - 1);
+				m_indices_tri.push_back(v[4] - 1);
+
+
+				for (int i = 0; i < 5; i++) {
+					m_vertices[v[i] - 1].texCoord = textureCoordinates[vt[i] - 1];
+					m_vertices[v[i] - 1].normal = vertexNormals[vn[i] - 1];
 				}
 			}
 			else {
@@ -598,7 +604,7 @@ void GraphicsObject::initGeom(char* filepath)
 	printf("\nThere are %d triangles, %d quads and %d pents.\n", ((int)m_indices_tri.size())/3, (int)m_indices_quad.size()/3, (int)m_indices_pent.size()/3);
 	// set y position to 'floor'
 	position = Vector3f(0, -bottomPosition, 0);
-	topPosition -= bottomPosition;
+	computeModelMat();
 
 	//for (Vertex v : m_vertices)
 	//	std::cout << "Vertex coords : (" << v.pos.x << ", " << v.pos.y << ", " << v.pos.z << "), Tex Coords : ( " << v.texCoord.x << ", " << v.texCoord.y << ")," <<std::endl;

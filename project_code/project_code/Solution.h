@@ -74,7 +74,7 @@ public:
 
 	// generaL shader that will be used by all objects
 	// initialization of the solution
-	int initSolution(char*);
+	int initSolution(char*, char*);
 	
 
 	void render();
@@ -91,6 +91,7 @@ private:
 	Cube c;
 	Hand hand;
 	Squish squish;
+	float handAdjust;
 	char* objectFilePath;
 	int numFrames;
 	static Solution *sol;

@@ -176,7 +176,7 @@ int Solution::timer(int operation)
 
 /******************************************************************************/
 // initialization of the solution
-int Solution::initSolution(char* objectFilePath)
+int Solution::initSolution(char* objectFilePath, char* materialFilePath)
 {
 	int rc;
 	Vertices vtx;
@@ -211,9 +211,10 @@ int Solution::initSolution(char* objectFilePath)
 	//create the hand object
 	hand.initGeom();
 	hand.setModelScale(2.5, 2.5, 2.5);
-	hand.setModelPosition(45, 0, 0);
+	hand.setModelPosition(40, 0, 0);
 	hand.incrementModelRotations(90, 0, 270);
 	hand.createVAO(shader);
+	handAdjust = 0;
 	
 	// set the camera initial position
 	cam.setCamera(Vector3f(0, 0, 100), Vector3f(0, 0,0), Vector3f(0, 1, 0));
@@ -228,7 +229,7 @@ int Solution::initSolution(char* objectFilePath)
 	light.enablePointLightCompnents(1, 1, 1);
 
 	//load the textures
-	squishTexture.loadTexture("./project_code/models/pikachu/textures/texture_170290017759.jpeg", GL_TEXTURE_2D);
+	squishTexture.loadTexture(materialFilePath, GL_TEXTURE_2D);
 	handTexture.loadTexture("./project_code/models/female-hand/textures/038F_05SET_04SHOT_DIFFUSE.png", GL_TEXTURE_2D);
 
 	//set the factor
@@ -339,6 +340,12 @@ void Solution::keyboard(unsigned char key, int x, int y)
 	case 'Z':
 		cam.zoomOut();
 		break;
+	case 'h':
+		handAdjust += 0.5;
+		break;
+	case 'H':
+		handAdjust -= 0.5;
+		break;
 	case '1':
 	case '2':
 	case '3':
@@ -406,7 +413,7 @@ int Solution::updateObjects(int numFrames)
 	t.incrementRotations(0, 0, 0.5);
 	c.incrementRotations(0.5, 0, 0.5);
 	squish.updateSquish(3);
-	hand.setHeightPosition(squish.getTopPosition());
+	hand.setHeightPosition(squish.getTopPosition() + handAdjust);
 	glutPostRedisplay();
 	return 0;
 }

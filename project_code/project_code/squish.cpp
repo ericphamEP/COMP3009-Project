@@ -10,7 +10,7 @@ void Squish::initGeom(char* filepath)
 void Squish::optimizeScale()
 {
     float targetHeight = 45;
-    float currHeight = topPosition;
+    float currHeight = topPosition-bottomPosition;
     //printf("%f\n", currHeight);
     float scale = targetHeight / currHeight;
     //printf("%f", scale);
@@ -47,12 +47,15 @@ void Squish::updateSquish(float factor)
             squishDown = true;
         }
     }
+
+    position.y = -bottomPosition * scale.y;
 }
 
 
 float Squish::getTopPosition()
 {
-    return scale.y * topPosition;
+
+    return position.y + (scale.y * (topPosition - bottomPosition));
 }
 
 
@@ -166,7 +169,6 @@ int Squish::render(Shader shader)
     rotMat = Matrix4f::rotateRollPitchYaw(rollAngle, pitchAngle, yawAngle, 1);
     // note that we always multiply the new matrix on the left
     modelMat = rotMat * modelMat;
-
 
     // set the translation - this is model space to world space transformation
     transMat = Matrix4f::translation(position);

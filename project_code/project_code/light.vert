@@ -24,7 +24,7 @@ void main(){
 	frag.worldPos = vec3(model * vec4(vtxPos, 1.0));
 
 	// transform the normal
-	frag.normal = vtxNormal;
+	frag.normal = (transpose(inverse(model))*vec4(vtxNormal, 1)).xyz;
 
 	// get the colour
 	frag.colour = vtxCol;
