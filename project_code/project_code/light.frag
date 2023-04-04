@@ -190,14 +190,9 @@ vec3 calcPointLight( material m,  pointLight l,  fragData frag, vec3 eyeWorldPos
 	// sum all the ligths contributions (make sure that RGB are not greater than 1)
 	//	factor in the light attentuation
 
-	vec4 textureColor = texture2D(texSampler, vec2(frag.texCoords.x, frag.texCoords.y));
-	frag.colour = vec4(1.0, 0.5, 0.0, 1.0);
-	if(enableAmbientLight == 1){
-		colour = (ambientLight) * (frag.colour.xyz/frag.colour.w);
-	}
-	else {
-		colour = (ambientLight + diffuseLight + specularLight) * (textureColor.xyz/textureColor.w);
-	}
+	vec4 textureColor = texture2D(texSampler, vec2(frag.texCoords.x, 1.0-frag.texCoords.y));
+
+	colour = (ambientLight + diffuseLight + specularLight) * (textureColor.xyz/textureColor.w);
 
 	return(colour);
 } 
@@ -211,7 +206,7 @@ vec3 calcPointLight( material m,  pointLight l,  fragData frag, vec3 eyeWorldPos
   
 void main() 
 { 
-	vec4 colour = vec4(1.0, 1.0, 1.0, 1.0);
+	vec4 colour = vec4(1.0, 0.5, 0.0, 1.0);
 	switch(gLightType) {
 	case POINT_LIGHT:
 		colour = vec4(calcPointLight(gMaterial, gPointLight, frag, gEyeWorldPos), 1.0);

@@ -595,9 +595,11 @@ void GraphicsObject::initGeom(char* filepath)
 
 	}
 
-	printf("\nThere are %d triangles, %d quads and %d pents.\n", (int)m_indices_tri.size(), (int)m_indices_quad.size(), (int)m_indices_pent.size());
+	printf("\nThere are %d triangles, %d quads and %d pents.\n", ((int)m_indices_tri.size())/3, (int)m_indices_quad.size()/3, (int)m_indices_pent.size()/3);
 	// set y position to 'floor'
 	position = Vector3f(0, -bottomPosition, 0);
 	topPosition -= bottomPosition;
 
+	//for (Vertex v : m_vertices)
+	//	std::cout << "Vertex coords : (" << v.pos.x << ", " << v.pos.y << ", " << v.pos.z << "), Tex Coords : ( " << v.texCoord.x << ", " << v.texCoord.y << ")," <<std::endl;
 }

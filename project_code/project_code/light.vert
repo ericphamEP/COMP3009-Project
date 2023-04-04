@@ -11,17 +11,17 @@ uniform mat4 view;
 uniform mat4 model; 
 uniform mat4 projection;
 
-in vec4 vtxPos;
+in vec3 vtxPos;
 in vec4 vtxCol;
 in vec3 vtxNormal;
-in vec2 vtxCoords;
+in vec2 vtxCoord;
 
 out fragData frag;
 
 void main(){
 
 	// transform the vertex position
-	frag.worldPos = vec3(model * vtxPos);
+	frag.worldPos = vec3(model * vec4(vtxPos, 1.0));
 
 	// transform the normal
 	frag.normal = vtxNormal;
@@ -30,9 +30,8 @@ void main(){
 	frag.colour = vtxCol;
 
 	//get the texture coordinates
-	frag.texCoords = vtxCoords;
+	frag.texCoords = vtxCoord;
 	
 	// set the output to the fragment shader
-	//gl_Position = projection * view * model * vtxPos;
-	gl_Position = projection * view * vtxPos;
+	gl_Position = projection * view * model * vec4(vtxPos, 1.0);
 }

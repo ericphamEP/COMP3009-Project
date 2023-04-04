@@ -212,7 +212,7 @@ int Hand::render(Shader shader)
     modelMat = transMat * modelMat;
 
     modelMat = worldMat * modelMat;
-
+    //computeModelMat();
     // move matrix to shader
     shader.copyMatrixToShader(modelMat, "model");
 

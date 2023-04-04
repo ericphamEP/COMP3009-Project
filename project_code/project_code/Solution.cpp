@@ -273,38 +273,20 @@ void Solution::render()
 	Vector3f tempPos = cam.getPosition();
 	shader.copyFloatVectorToShader((float*)&tempPos, 1, 3, "gEyeWorldPos");
 
-	// pass it to opengl before draw
-	//viewMat = Matrix4f::transpose(viewMat);
-	//viewMat = Matrix4f::identity();
-	//glLoadMatrixf((GLfloat *)viewMat.data());
-
 
 	// set the projection matrix
 	projMat = cam.getProjectionMatrix(NULL);
 	// move matrix to shader
 	shader.copyMatrixToShader(projMat, "projection");
 
-	//glMatrixMode(GL_PROJECTION);
-	// pass it to opengl - Note that OpenGL accepts the matrix in column major
-	//projMat = Matrix4f::transpose(projMat);
-	//glLoadMatrixf((GLfloat *)projMat.data());
 
-
-	// load the texture unit to the shade
-	//squishTexture.bindToTextureUnit(GL_TEXTURE1);
-	//squishTexture.setTextureSampler(shader, "texSampler", GL_TEXTURE1);
+	// squish object rendering
+	squishTexture.bindToTextureUnit(GL_TEXTURE1);
+	squishTexture.setTextureSampler(shader, "texSampler", GL_TEXTURE1);
 	
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	//squish.render(shader);
+	squish.render(shader);
 
-	// render the objects
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	// triangle in fill mode
-	//t.render();
-
-//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);	// cube in wireframe mode
-	//c.render();
-
-	// update hand position
+	// hand rendering
 	handTexture.bindToTextureUnit(GL_TEXTURE1);
 	handTexture.setTextureSampler(shader, "texSampler", GL_TEXTURE1);
 	

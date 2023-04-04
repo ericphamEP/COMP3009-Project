@@ -56,7 +56,6 @@ struct Vertex {
 
 	Vector3f pos;
 	Vector3f normal;
-	//float pos[VERTEX_DIMENSIONS];
 	Vector4f col;
 	Vector2f texCoord;
 };

@@ -111,6 +111,7 @@ protected:
 
 	virtual int loadMaterials(Shader shader);
 
+	void computeModelMat();
 
 public:
 	void setModelRotations(float rollAngle, float pitchAngle, float yawAngle);
@@ -132,7 +133,7 @@ public:
 private:
 
 
-	void computeModelMat();
+	//void computeModelMat();
 	void computeWorldMat();
 
 
