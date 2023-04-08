@@ -1,61 +1,19 @@
-
-
-
-
-/*
-* File name Light.cpp
-
-Purpose: store the information about the lights and transfer the data to the shader
-
-
-
-*/
-
-/***************************************************************************/
-//	INCLUDE
 #include "stdio.h"
 #include "stdlib.h"
 #include "Light.h"
 
-/***************************************************************************/
-// STRUCTURES
-
-
-/***************************************************************************/
-//DEFINES
-
-
-
-/***************************************************************************/
-// PROTOTYPES
-
-/***************************************************************************/
-
-// Purpose: constructor
 
 Light::Light()
 {
 
 }
 
-
-/***************************************************************************/
-
-// Purpose: destructor
-
 Light::~Light()
 {
 
 }
 
-
-
-
-/***************************************************************************/
-/* 
-* Purpose: loads the light infrmation to the shader
-* 
-*/
+// Purpose: loads the light information to the shader
 int Light::loadPointLight(Shader shader)
 {
 
@@ -79,9 +37,7 @@ int Light::loadPointLight(Shader shader)
 	return 0;
 }
 
-/***********************************************************/
 // Set the point light
-
 int Light::setPointLight(PointLight light)
 {
 	pointLight.lightIntensity = light.lightIntensity;
@@ -91,31 +47,22 @@ int Light::setPointLight(PointLight light)
 	return 0;
 }
 
-/***********************************************************/
-// Set the point light
-
+// Set the point light components
 int Light::enablePointLightCompnents(int enableAmbientLight, int enableDiffuseLight, int enableSpecularLight)
 {
 	pointLight.enableAmbientLight = enableAmbientLight;
 	pointLight.enableDiffuseLight = enableDiffuseLight;
 	pointLight.enableSpecularLight = enableSpecularLight;
-
-	//printf("%d, %d, %d\n", pointLight.enableAmbientLight, pointLight.enableDiffuseLight, pointLight.enableSpecularLight);
-
 	return 0;
 }
 
-/***********************************************************/
 // Set the spot light
-
 int Light::setSpotLight(SpotLight light)
 {
-
 	return 0;
 }
 
-/*********************************************************************************/
-//Toggle light components
+// Toggle light components
 int Light::toggleLightComponents(int ambient, int diffuse, int specular) {
 	int a, d, s;
 	
@@ -127,9 +74,7 @@ int Light::toggleLightComponents(int ambient, int diffuse, int specular) {
 	return 0;
 }
 
-
-/***************************************************************************/
-
+// Adjust specular intensity
 void Light::specularIntensity(float delta) {
 	if ((pointLight.specularPower + delta) < 0) {
 		pointLight.specularPower = 0;
@@ -139,11 +84,3 @@ void Light::specularIntensity(float delta) {
 	}
 	printf("specular intensity: %.2f\n", pointLight.specularPower);
 }
-
-/***************************************************************************/
-
-
-
-/***************************************************************************/
-
-

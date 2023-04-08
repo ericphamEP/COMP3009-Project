@@ -1,5 +1,3 @@
-
-
 //=============================================================================
 // solution.c
 //
@@ -27,12 +25,7 @@
 //--------------
 //
 // The code is provided as is without any warranty
-
 //=============================================================================
-
-
-
-
 
 
 #include "Solution.h"
@@ -42,29 +35,20 @@
 #define MAX_SPEED 2.0
 
 
-
-
 Solution *Solution::sol = NULL;
 
-/****************************************************************************/
 
 Solution::Solution() : numFrames(0)
 
 {
 }
 
-/*************************************************************************/
-
-
 Solution::~Solution()
 {
 
 }
 
-/******************************************************************************/
-
-
-// initializing the opengl functions and windows
+// Initializing the opengl functions and windows
 int Solution::initOpenGL()
 {
 	//initialize OpenGL
@@ -80,7 +64,7 @@ int Solution::initOpenGL()
 	glutReshapeFunc(Solution::winResizeCB);
 	glutKeyboardFunc(Solution::keyboardCB);
 	glutSpecialFunc(Solution::specialKeyboardCB);
-	glutTimerFunc(FRAME_TIME, Solution::timerCB, UPDATE_RENDERRED_OBJECTS);
+	glutTimerFunc(FRAME_TIME, Solution::timerCB, UPDATE_RENDERED_OBJECTS);
 
 	GLenum res = glewInit();
 	if (res != GLEW_OK) {
@@ -88,81 +72,46 @@ int Solution::initOpenGL()
 		return (-1);
 	}
 
-
 	return 0;
 }
 
-/************************************************************/
-
-// render callback function.  This is a static funcion
-
-
+// render callback function
 void Solution::renderCB()
 {
-
 	sol->render();
-	
 }
 
-
-/************************************************************/
-
-// keyboard callback function.  This is a static funcion
-
-
+// keyboard callback function
 void Solution::keyboardCB(unsigned char key, int x, int y)
 {
 	sol->keyboard(key, x, y);
 }
 
-
-/************************************************************/
-
-// special keyboard callback function.  This is a static funcion
-
-
-
+// special keyboard callback function
 void Solution::specialKeyboardCB(int key, int x, int y)
 {
 	sol->specialKeyboard(key, x, y);
 }
 
-
-/************************************************************/
-
-// window resize callback function.  This is a static funcion
-
-
-
+// window resize callback function
 void Solution::winResizeCB(int width, int height)
 {
 	sol->winResize(width, height);
 }
 
-/************************************************************/
-
-// timer  callback function.  This is a static funcion
-
-
+// timer  callback function
 void Solution::timerCB(int operation)
 {
-
-	glutTimerFunc(FRAME_TIME, Solution::timerCB, UPDATE_RENDERRED_OBJECTS);	
+	glutTimerFunc(FRAME_TIME, Solution::timerCB, UPDATE_RENDERED_OBJECTS);	
 	sol->timer(operation);
-
 }
 
-
-/************************************************************/
-
-// timrt  function.  
-
-
+// timer  function
 int Solution::timer(int operation)
 {
 	numFrames++;
 	switch (operation) {
-	case UPDATE_RENDERRED_OBJECTS:
+	case UPDATE_RENDERED_OBJECTS:
 		updateObjects(numFrames);
 		break;
 	default:
@@ -172,10 +121,9 @@ int Solution::timer(int operation)
 }
 
 
-
-
 /******************************************************************************/
-// initialization of the solution
+
+// initialization
 int Solution::initSolution(char* objectFilePath, char* materialFilePath)
 {
 	int rc;
@@ -229,24 +177,14 @@ int Solution::initSolution(char* objectFilePath, char* materialFilePath)
 	return 0;
 }
 
-
-
-
-/**********************************************************************/
-
 void Solution::setSolution(Solution * _sol)
 {
 	Solution::sol = _sol;
 }
 
-/************************************************************/
-
-// render function.  
-
-
+// render function
 void Solution::render()
 {
-
 	Matrix4f viewMat, projMat;
 	
 	shader.useProgram(1);
@@ -265,12 +203,10 @@ void Solution::render()
 	Vector3f tempPos = cam.getPosition();
 	shader.copyFloatVectorToShader((float*)&tempPos, 1, 3, "gEyeWorldPos");
 
-
 	// set the projection matrix
 	projMat = cam.getProjectionMatrix(NULL);
 	// move matrix to shader
 	shader.copyMatrixToShader(projMat, "projection");
-
 
 	// squish object rendering
 	squishTexture.bindToTextureUnit(GL_TEXTURE1);
@@ -287,17 +223,11 @@ void Solution::render()
 	glutSwapBuffers();
 }
 
-
-/************************************************************/
-
 // keyboard handling function. 
-// This one is the keyboard func (clearly) which moves the camera using WASD
-// Note: 033 is an "octal" number and is the same thing as Escape, so you could call "exit" on that
-
+// Note: 033 is an "octal" number and is Escape key, so you could call "exit" on that
 void Solution::keyboard(unsigned char key, int x, int y)
 {
 	static int nc = 0;
-	
 
 	nc++;
 	switch (key) {
@@ -349,14 +279,7 @@ void Solution::keyboard(unsigned char key, int x, int y)
 	}
 }
 
-
-
-/************************************************************/
-
-// special keyboard handling  function.  
-
-
-
+// special keyboard handling function
 void Solution::specialKeyboard(int key, int x, int y)
 {
 	switch (key) {
@@ -380,23 +303,13 @@ void Solution::specialKeyboard(int key, int x, int y)
 	}
 }
 
-
-/************************************************************/
-
 // window resize handling function.  
-
-
-
 void Solution::winResize(int width, int height)
 {
-
 	glViewport(0, 0, width, height);
-
 }
 
-/***********************************************************/
-// update the state of the objects
-
+// update state of the objects
 int Solution::updateObjects(int numFrames)
 {
 	squish.updateSquish(3);

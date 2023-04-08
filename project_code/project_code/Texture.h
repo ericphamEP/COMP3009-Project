@@ -17,8 +17,7 @@ public:
 	void setTextureSampler(Shader shader, const char *sampleName, GLuint samplerId);
 
 private:
-	GLuint textureId; //texture handle
-	int textureUnit; //unit used by sampler
+	GLuint textureId;
+	int textureUnit;
 
 };
-

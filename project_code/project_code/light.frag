@@ -1,16 +1,11 @@
 
 #version 330  
 
-
-//******************************************************************
 // DEFINES
 #define POINT_LIGHT 1
 #define SPOT_LIGHT  2
 
 
-
-
-//******************************************************************
 // STRUCTURES
 
 struct fragData{
@@ -20,7 +15,6 @@ struct fragData{
 	vec2 texCoords;
 } ;
 
-// object material 
 struct material {
 	vec3 ambientMaterial;		// ambient material properties
 	vec3 diffuseMaterial;		// diffuse material properties
@@ -28,8 +22,6 @@ struct material {
 	vec3 internalRadion;		// internal radiation of colour;
 };
 
- 
-// Point light properties
 struct pointLight {		
 	vec3 lightIntensity;		// light intensity
 	vec3 ambientIntensity;		// intesity of ambient colour
@@ -37,7 +29,6 @@ struct pointLight {
 	float specularPower;		// specular light power factor
 } ;
 
-// directional light properties
 struct directionalLight {
 	vec3 lightIntensity;		// light intensity
 	vec3 ambientIntensity;		// intesity of ambient colour
@@ -45,16 +36,13 @@ struct directionalLight {
 	float specularPower;		// specular light power factor
 };
 
-// light attenuation  
 // attenuation = 1/(a + b * d + c * d * d)
 struct attenuation {
 	float a; 
 	float b; 
 	float c;
 };  
- 
-  
-// spot light properties
+
 struct spotLight {
 	vec3 lightIntensity;		// light intensity
 	vec3 ambientIntensity;		// intesity of ambient colour
@@ -66,42 +54,32 @@ struct spotLight {
 }; 
 
 
-//******************************************************************
 // UNIFORM Variables
-
 
 uniform vec3 gEyeWorldPos;					// camera/user location 
 uniform pointLight gPointLight;				// point light 
-uniform directionalLight gDirectionalLight;  // directonal light
-uniform spotLight gSpotLight;
-uniform int gLightType;	// == 1 is a point light; == 2 spot light;  == 3 directional light;  
-uniform material gMaterial;			// material of object
+uniform directionalLight gDirectionalLight;	// directonal light
+uniform spotLight gSpotLight;				// spot light
+uniform int gLightType;						// == 1 is a point light; == 2 spot light;  == 3 directional light;  
+uniform material gMaterial;					// material of object
 
-uniform int enableAmbientLight; //0 is off, 1 is on
+uniform int enableAmbientLight; // 0 is off, 1 is on
 uniform int enableDiffuseLight;
 uniform int enableSpecularLight;
 
 uniform sampler2D texSampler; 
 
-//******************************************************************
+
 // VARIABLES
 
-//in fragData{
-//	vec3 normal;
-//	vec3 worldPos; 
-//	vec4 colour;
-//} frag;
 in fragData frag;  // fragment properties from the vertex shader
-
 out vec4 outColour; // output colour
 
-//******************************************************************
+
 // FUNCTIONS
 
-//-----------------------------------------------------------
-// Calculate ambient light contribution
 vec3 calcAmbientLight( material m,  directionalLight l)  
-{  
+{
     vec3 colour;
 	
 	// calculate teh abmient light contribution 
@@ -109,17 +87,14 @@ vec3 calcAmbientLight( material m,  directionalLight l)
 
 	return(colour);
     
-}  
-  
-  
-//-----------------------------------------------------------
-// Calculate diffuse contribution
+}
+
 vec3 calcDiffuseLight(
-	 material m, // the objct diffuse matrial
-	vec3 lightVector, // the light vector, 
-	vec3 normal, // the normal 
-	vec3 lightIntensity)		// the diffuse light intensity  
-{  
+	 material m,			// the objct diffuse matrial
+	vec3 lightVector,		// the light vector,
+	vec3 normal,			// the normal
+	vec3 lightIntensity)	// the diffuse light intensity
+{
     vec3 colour;
 	
 	// compute the diffuse factor
@@ -129,21 +104,18 @@ vec3 calcDiffuseLight(
 	colour = m.diffuseMaterial * lightIntensity * diffuseFactor;
 
 	return(colour);
-}  
-  
-  
-//-----------------------------------------------------------
-// Calculate specular contribution
+}
+
 vec3 calcSpecularLight(
-	 material m,	// the specular matrial
-	vec3 lightVector,	// the light vector, 
-	vec3 normal,		// the normal 
-	vec3 lightIntensity, // the specular light intensity  
-	vec3 eyeWorldPos,	// the eye/camera position
-	float specPower)		//specular power
-{  
+	 material m,			// the specular matrial
+	vec3 lightVector,		// the light vector, 
+	vec3 normal,			// the normal 
+	vec3 lightIntensity,	// the specular light intensity  
+	vec3 eyeWorldPos,		// the eye/camera position
+	float specPower)		// specular power
+{
 	vec3 colour = vec3(0,0,0);
-	
+
 	// compute  the eye vector 
 	vec3 eyeVector = normalize(-eyeWorldPos);
 
@@ -157,10 +129,7 @@ vec3 calcSpecularLight(
 	colour = lightIntensity * m.specularMaterial * specImpact;
 
 	return(colour);
-}  
-
-//-----------------------------------------------------------
-// Point light calculation
+}
 
 vec3 calcPointLight( material m,  pointLight l,  fragData frag, vec3 eyeWorldPos)  
 {
@@ -188,7 +157,7 @@ vec3 calcPointLight( material m,  pointLight l,  fragData frag, vec3 eyeWorldPos
 	}
 
 	// sum all the ligths contributions (make sure that RGB are not greater than 1)
-	//	factor in the light attentuation
+	// factor in the light attentuation
 
 	vec4 textureColor = texture2D(texSampler, vec2(frag.texCoords.x, 1.0-frag.texCoords.y));
 
@@ -198,12 +167,9 @@ vec3 calcPointLight( material m,  pointLight l,  fragData frag, vec3 eyeWorldPos
 } 
 
 
-
-
-
 //-----------------------------------------------------------
 
-  
+
 void main() 
 { 
 	vec4 colour = vec4(1.0, 0.5, 0.0, 1.0);
@@ -212,7 +178,6 @@ void main()
 		colour = vec4(calcPointLight(gMaterial, gPointLight, frag, gEyeWorldPos), 1.0);
 		break;
 	case SPOT_LIGHT:
-		
 		break;
 	}
 	
