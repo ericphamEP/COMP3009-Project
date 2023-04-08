@@ -47,13 +47,17 @@
 #include "Shader.h"
 
 
+/******************************************************************/
 // STRUCTURES
 typedef struct materials {
-	Vector3f ambientMaterial;
-	Vector3f diffuseMaterial;
-	Vector3f specularMaterial;
-	Vector3f interalRadiation;
+	Vector3f ambientMaterial;		// ambient material properties
+	Vector3f diffuseMaterial;		// diffuse material properties
+	Vector3f specularMaterial;		// specular material properties
+	Vector3f interalRadiation;		// internal radiation of colour;
 } MATERIALS;
+
+
+/*********************************************************************/
 
 
 class GraphicsObject
@@ -69,7 +73,11 @@ public:
 	virtual int render(Shader shader);
 	virtual void update() {};
 
+
+
+
 protected:
+	
 	float rollAngle;	// rotation around the z-axis
 	float pitchAngle;	// rotation around the x-axis
 	float yawAngle;		// rotation around the y-axis
@@ -82,6 +90,7 @@ protected:
 	Vector3f worldPosition;	// object position in space
 	Vector3f worldScale;		// scaling of the object
 	std::vector<GraphicsObject*> m_children;
+
 
 	Matrix4f modelMat;
 	Matrix4f worldMat;
@@ -101,6 +110,7 @@ protected:
 	MATERIALS materials;
 
 	virtual int loadMaterials(Shader shader);
+
 	void computeModelMat();
 
 public:
@@ -113,6 +123,7 @@ public:
 	void setModelScale(Vector3f position);
 	void setModelScale(float x, float y, float z);
 
+
 	void setWorldRotations(float rollAngle, float pitchAngle, float yawAngle);
 	void setWorldPosition(Vector3f position);
 	void incrementWorldRotations(float rollAngle, float pitchAngle, float yawAngle);
@@ -120,7 +131,12 @@ public:
 	void initGeom(char* filepath);
 
 private:
+
+
+	//void computeModelMat();
 	void computeWorldMat();
+
+
 
 };
 

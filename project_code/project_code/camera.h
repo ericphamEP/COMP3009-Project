@@ -45,10 +45,11 @@ public:
 	int roll(float angleDeg);
 	int pitch(float angleDeg);
 	int yaw(float angleDeg);
-	Vector3f getPosition(void);
-	Vector3f getLookAtPoint(void);
-	Vector3f getUpVector(void);
+	Vector3f getPosition(void);		// DN 26/10/2015
+	Vector3f getLookAtPoint(void);	// DN 26/10/2015
+	Vector3f getUpVector(void);		// DN 26/10/2015
 	float getSpeed(void);
+
 
 	void setCamera(Vector3f position, Vector3f lookAtPoint, Vector3f upVector);
 
@@ -56,6 +57,7 @@ public:
 	Vector3f changePositionDelta(Vector3f *dv);				// change position by relative amount
 	Vector3f changeAbsPosition(float x, float y, float z);		// change to a new position in space
 	Vector3f changeAbsPosition(Vector3f *v);					// change to a new position in space
+	Vector3f changeAbsPosition(Vector3f v);					// change to a new position in space
 	Vector3f moveForward(float numUnits);	// moves the camera forward by the numUnits units along the lookAtVector
 	Vector3f moveBackward(float numUnits);  // moves the camera backward numUnits units along the lookAtVector
 	Vector3f moveRight(float numUnits);
@@ -75,16 +77,18 @@ public:
 private:
 	int updateOrientation(Vector3f rotVector, float angleRad); // update the camera's orientation in space // DN 26/10/2015
 
+	
+
 private:
 	Matrix4f viewMat;
 	Matrix4f projMat;
 	Matrix4f rotMat;
-	Vector3f position;
-	Vector3f upVector;
-	Vector3f lookAtVector;
+	Vector3f position;		// DN 26/10/2015
+	Vector3f upVector;		// DN 26/10/2015
+	Vector3f lookAtVector;	// DN 26/10/2015
 	float speed;
 
-	// Perspective projection fields
+	// perspective projection fields
 	float fieldOfView;
 	float aspectRatio;
 	float nearPlane;

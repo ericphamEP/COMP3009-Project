@@ -2,7 +2,7 @@
 //=============================================================================
 // camera.cpp 
 //
-// Author: Doron Nussbaum (C) 2012 All Rights Reserved.
+//Author: Doron Nussbaum (C) 2012 All Rights Reserved.
 //-----------------------------------------------------
 //
 // Purpose: 
@@ -28,20 +28,31 @@
 //
 // The code is provided as is without any warranty
 
+
 // Revsions:
 // 1. Created - 10/2012 Doron Nussbaum
-// 2. October 26, 2015 Doron Nussbaum - modifed geometry of the camera from 4D to 3D coordinates.
+// 2. October 26, 2015 Doron Nussbaum - modifed geometry of the camera from 4D to 3D coordinates. 
+
 
 
 //=============================================================================
 
+
 #include "camera.h"
 
+
+/******************************************************************/
 /*
 Purpose: camera constructor
-Descripton: Setup camera attributes.
-Return: n/a
+
+
+Descripton: 
+
+Return:
+
+
 */
+//Vector3f(0, 100, 100), Vector3f(0, 0, 0), Vector3f(0, 1, 0)
 Camera::Camera(void): position(0, 0, 100), lookAtVector(0, 0, -1), upVector(0.0,1.0,0.0)
 , speed(0), nearPlane(0.1), farPlane(1000), fieldOfView(60), aspectRatio(1.0)
 {
@@ -49,18 +60,36 @@ Camera::Camera(void): position(0, 0, 100), lookAtVector(0, 0, -1), upVector(0.0,
 	projMat = Matrix4f::symmetricPerspectiveProjectionMatrix(fieldOfView, aspectRatio, nearPlane, farPlane);
 }
 
+/******************************************************************/
+/*
+Purpose: camera destructor
+
+
+Descripton: 
+
+Return:
+
+
+*/
 Camera::~Camera(void)
 {
 }
 
+
+/******************************************************************/
 /*
-Purpose: Roll transformation
-Descripton: Change camera orientation (roll transformation)
+Purpose: change the orientation of the Camera (roll transformation)
+
+
+Descripton: 
 
 Return:
 1 - if failed
 0 - if successful
+
 */
+
+
 int Camera::roll(float angleDeg)
 {
 	// get rotation matrix around the lookAtVector. Pay attention to the roll vector
@@ -75,16 +104,23 @@ int Camera::roll(float angleDeg)
 	return 0;
 }
 
+
+/******************************************************************/
 /*
-Purpose: Pitch transformation
-Descripton: Change camera orientation (pitch transformation)
+Purpose: change the orientation of the Camera (pitch transformation)
+
+
+Descripton: 
 
 Return:
 1 - if failed
 0 - if successful
+
 */
+
 int Camera::pitch(float angleDeg)
 {
+
 	// get rotation axis
 	Vector3f rotVector = Vector3f::cross(upVector, lookAtVector);
 
@@ -101,16 +137,24 @@ int Camera::pitch(float angleDeg)
 	return 0;
 }
 
+/******************************************************************/
 /*
-Purpose: Yaw transformation
-Descripton: Change camera orientation (yaw transformation)
+Purpose: change the orientation of the camera (yaw transformation)
+
+
+Descripton: 
 
 Return:
 1 - if failed
 0 - if successful
+
 */
+
+
+
 int Camera::yaw(float angleDeg)
 {
+
 	// get the rotation matrix around the upVector 
 	rotMat = Matrix4f::rotateVector(upVector, angleDeg, true);
 
@@ -123,62 +167,115 @@ int Camera::yaw(float angleDeg)
 	return 0;
 }
 
+/******************************************************************/
 /*
-Descripton: Obtains the current position of the camera
-Return: Vector3f - camera position
+Purpose: obtains the current position of the camera
+
+
+Descripton: 
+
+Return:
+Vector3f - camera position
+
 */
+
 Vector3f Camera::getPosition(void)
 {
 	Vector3f v = position;	// DN 26/10/2015
 	return (v);
 }
 
+
+/******************************************************************/
 /*
-Purpose: 
-Descripton: obtains the lookAt point of the camera
-Return: Vector3f - camera lookAt point
+Purpose: obtains the lookAt point of the camera
+
+
+Descripton: 
+
+Return:
+Vector3f - camera lookAt point
+
 */
+
+
 Vector3f Camera::getLookAtPoint(void)	// DN 26/10/2015
 {
 	return (position + lookAtVector);
 }
 
+/******************************************************************/
 /*
-Descripton: Obtains the camera's up vector
-Return: Vector3f - Camera upVector
+Purpose: obtains the camera's up vector
+
+
+Descripton: 
+
+Return:
+Vector3f - Camera upVector
+
 */
+
+
+
 Vector3f Camera::getUpVector(void)		// DN 26/10/2015
 {
 	return (upVector);
 }
 
+
+/******************************************************************/
 /*
-Descripton: changes the camera's position relative to its current position
+Purpose: changes the camera's position relative to its current position
+
+
+Descripton: 
+
 Return:
-Vector3f - position
+0 - success
+
 */
+
+
 Vector3f Camera::changePositionDelta(float dx, float dy, float dz)
 {
 	// update the absolute position
 	return changeAbsPosition(position.x + dx, position.y + dy, position.z + dz);
 }
 
+
+/******************************************************************/
 /*
-Descripton: changes the camera's position relative to its current position
+Purpose: changes the camera's position relative to its current position
+
+
+Descripton: 
+
 Return:
-Vector3f - position
+0 - success
+
 */
+
+
 Vector3f Camera::changePositionDelta(Vector3f *dv)
 {
-	// update absolute position
+	// update the absolute  position
 	return changePositionDelta(dv->x, dv->y, dv->z);
 }
 
+/******************************************************************/
 /*
-Descripton: changes the camera's position to a new position
+Purpose: changes the camera's position to a new position
+
+
+Descripton: 
+
 Return:
-Vector3f - position
+0 - success
+
 */
+
+
 Vector3f Camera::changeAbsPosition(float x, float y, float z)
 {
 	// set the position to the given position
@@ -192,10 +289,16 @@ Vector3f Camera::changeAbsPosition(float x, float y, float z)
 	return (position);
 }
 
+/******************************************************************/
 /*
-Descripton: changes the camera's position to a new position
+Purpose: changes the camera's position to a new position
+
+
+Descripton: 
+
 Return:
-Vector3f - position
+0 - success
+
 */
 
 Vector3f Camera::changeAbsPosition(Vector3f *v)
@@ -204,13 +307,21 @@ Vector3f Camera::changeAbsPosition(Vector3f *v)
 	return changeAbsPosition(v->x, v->y, v->z);
 }
 
+
+
+/******************************************************************/
 /*
 Purpose: changes the camera's position along the LootAt vector
+
+
 Descripton: move the camera forward by the numUnits along the looAtVector
 
 Return:
-Vector3f - position
+the new position
+
 */
+
+
 Vector3f Camera::moveForward(float numUnits)
 {
 	// update the position along the lookAt vector
@@ -220,25 +331,43 @@ Vector3f Camera::moveForward(float numUnits)
 	return changeAbsPosition(&position);
 }
 
+
+
+/******************************************************************/
 /*
 Purpose: changes the camera's position along the LootAt vector
-Descripton: move the camera backward by the numUnits along the looAtVector
+
+
+Descripton: move the camera forward by the numUnits along the looAtVector
 
 Return:
-Vector3f - position
+the new position
+
 */
+
+
 Vector3f Camera::moveBackward(float numUnits)
 {
 	return(moveForward(-numUnits));
 }
 
+
+/******************************************************************/
 /*
-Descripton: Update the orientation of the lookat vector and the up vector
+Purpose: UPdate the orientation of the lookat vector and the up vector
+
+
+Descripton: 
+
 Return:
-0 - success
+
+
 */
+
+
 int Camera::updateOrientation(Vector3f rotVector, float angleRad)
 {
+
 	Vector3f xaxis(0.0,0.0,0.0);
 	Vector4f u;
 
@@ -266,11 +395,20 @@ int Camera::updateOrientation(Vector3f rotVector, float angleRad)
 	return 0;
 }
 
+/******************************************************************/
 /*
-Descripton: obtains the view transformation matrix
+Purpose: obtains the view transformation matrix
+
+
+Descripton: 
+
 Return:
-Matrix4f - transformation matrix
+the transformation matrix
+
 */
+
+
+
 Matrix4f Camera::getViewMatrix(Matrix4f *viewMatrix)
 {
 	Vector3f lookAtPoint;
@@ -283,10 +421,22 @@ Matrix4f Camera::getViewMatrix(Matrix4f *viewMatrix)
 	return(m);
 }
 
+
+
+/*********************************************************************************/
+
 /*
-Descripton: set camera parameters
-Return: void
+Purpose: set the camera parameters
+
+
+Descripton:
+
+Return:
+
+
 */
+
+
 void Camera::setCamera(Vector3f position, Vector3f lookAtPoint, Vector3f upVector)
 {
 	// set the position
@@ -306,29 +456,27 @@ void Camera::setCamera(Vector3f position, Vector3f lookAtPoint, Vector3f upVecto
 	viewMat = Matrix4f::cameraMatrix(this->position, this->position + this->lookAtVector, this->upVector);
 }
 
-/*
-Descripton: update camera speed
-Return: 0 - success
-*/
+
+/*********************************************************************************/
+
+
+// change the speed of the camera motion
 int Camera::updateSpeed(float speed)
 {
 	this->speed += speed;
 	return 0;
 }
 
-/*
-Descripton: get camera speed
-Return: float - speed
-*/
+
 float Camera::getSpeed(void)
 {
 	return(speed);
 }
 
-/*
-Descripton: change camera look-at vector
-Return: 0 - success
-*/
+
+/*********************************************************************************/
+
+
 int Camera::changeLookAtVector(float x, float y, float z)
 {
 	// update the look at vector
@@ -343,9 +491,14 @@ int Camera::changeLookAtVector(float x, float y, float z)
 	return 0;
 }
 
+
+
+/*********************************************************************************/
+
+
 /*
-Descripton: Moving the camera sideways to the right by numUnits
-Return: Vector3f - position
+Moving the camera sideways to the right by numUnits
+
 */
 Vector3f Camera::moveRight(float numUnits)
 {
@@ -361,33 +514,37 @@ Vector3f Camera::moveRight(float numUnits)
 	// update the view matrix
 	viewMat = Matrix4f::cameraMatrix(position, position + lookAtVector, upVector);
 
-	return (position);
+	return (position);	// DN 26/10/2015
 }
 
+
+/*********************************************************************************/
+
+
 /*
-Descripton: Moving the camera sideways to the left by numUnits
-Return: Vector3f - position
+Moving the camera sideways to the left by numUnits
+
 */
 Vector3f Camera::moveLeft(float numUnits)
 {
 	Vector3f pos = moveRight(-numUnits);
+	// use the inverse of moving right
 	return(pos);
 }
 
-/*
-Descripton: zoom in small amount
-Return: 0 - success
-*/
+
+/****************************************************************************************/
+// zoom functions
+
+/**************************************************************************************************/
+// zoom in by changing the field of view
 int Camera::zoomIn(void)
 {
 	zoomIn(1);
 	return 0;
 }
 
-/*
-Descripton: zoom in by changing the field of view
-Return: 0 - success
-*/
+
 int Camera::zoomIn(float zoom)
 {
 	fieldOfView -= zoom;
@@ -396,20 +553,13 @@ int Camera::zoomIn(float zoom)
 	return 0;
 }
 
-/*
-Descripton: zoom out small amount
-Return: 0 - success
-*/
 int Camera::zoomOut(void)
 {
 	zoomOut(1);
 	return 0;
 }
 
-/*
-Descripton: zoom in by changing the field of view
-Return: 0 - success
-*/
+
 int Camera::zoomOut(float zoom)
 {
 	fieldOfView += zoom;
@@ -418,10 +568,10 @@ int Camera::zoomOut(float zoom)
 	return 0;
 }
 
-/*
-Descripton: set perspective view
-Return: 0 - success
-*/
+
+/**************************************************************************************************/
+
+
 int Camera::setPerspectiveView(float fieldOfView, float aspectRatio, float nearPlane, float farPlane)
 {
 	this->fieldOfView = fieldOfView;
@@ -433,11 +583,21 @@ int Camera::setPerspectiveView(float fieldOfView, float aspectRatio, float nearP
 	return 0;
 }
 
+/**************************************************************************************************/
+/******************************************************************/
 /*
-Descripton:obtains the projection transformation matrix
+Purpose: obtains the projection transformation matrix
+
+
+Descripton:
+
 Return:
-Matrix4f - transformation matrix
+the transformation matrix
+
 */
+
+
+
 Matrix4f Camera::getProjectionMatrix(Matrix4f *projMatrix)
 {
 	Matrix4f m;
@@ -447,3 +607,4 @@ Matrix4f Camera::getProjectionMatrix(Matrix4f *projMatrix)
 
 	return(m);
 }
+

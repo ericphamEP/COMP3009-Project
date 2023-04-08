@@ -15,6 +15,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="project_code\Triangle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="project_code\graphicsObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -25,6 +28,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="project_code\Solution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="project_code\Cube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="project_code\stdafx.cpp">
@@ -59,6 +65,9 @@
     <ClInclude Include="project_code\camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="project_code\cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="project_code\geometry_common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -69,6 +78,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="project_code\targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="project_code\Triangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="project_code\Shader.h">
@@ -85,10 +97,22 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="project_code\squishShader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="project_code\squishShader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="project_code\light.frag">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="project_code\light.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="project_code\textureShader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="project_code\textureShader.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

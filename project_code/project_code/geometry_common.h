@@ -18,13 +18,18 @@ REVISIONS:
 #define GEOMETRY_COMMON 1
 
 
+/*******************************************************************/
 // INCLUDE FILES
 #include <vector>
 #include "GL/nuss_math.h"
 
-// DEFINE
+/*******************************************************************/
+
+// DEFGINES
 
 #define VERTEX_DIMENSIONS 3
+
+/*******************************************************************/
 
 // STRUCTURES
 
@@ -56,6 +61,8 @@ struct Vertex {
 };
 
 typedef struct Vertex VERTEX;
+
+
 
 typedef std::vector<Vertex> Vertices;
 typedef std::vector<unsigned int>	Indices;

@@ -2,13 +2,24 @@
 #include "GL/SOIL.h"
 
 
+/**************************************************************************************/
+
+
 Texture::Texture()
 {
 }
 
+
+/**************************************************************************************/
+
+
+
+
 Texture::~Texture()
 {
 }
+
+
 
 void Texture::loadTexture(const char* imgFileName, GLuint textureTarget) {
 	int width, height; 
@@ -37,10 +48,12 @@ void Texture::loadTexture(const char* imgFileName, GLuint textureTarget) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
+
 void Texture::bindToTextureUnit(int texUnit){
 	glActiveTexture(texUnit);
 	glBindTexture(GL_TEXTURE_2D, textureId);
 }
+
 
 void Texture::setTextureSampler(Shader shader, const char *sampleName, GLuint samplerId){
 	GLuint location = glGetUniformLocation(shader.getProgId(), sampleName);
