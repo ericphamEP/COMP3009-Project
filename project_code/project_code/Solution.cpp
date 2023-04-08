@@ -184,7 +184,6 @@ int Solution::initSolution(char* objectFilePath, char* materialFilePath)
 	pointLight point;
 
 	// create the shader object
-	//rc = shader.createShaderProgram("light_add.vert", "light_add_to_continue.frag");
 	char vtxShader[] = "./project_code/light.vert";
 	char fragShader[] = "./project_code/light.frag";
 
@@ -194,14 +193,6 @@ int Solution::initSolution(char* objectFilePath, char* materialFilePath)
 		rc = -1;
 		//goto err;
 	}
-
-	// create one triangle
-	t.setInitialPosition(0, 0, -5);
-	t.setScale(9, 9, 9);
-
-	// create one cube
-	c.setInitialPosition(-20, 0, -5);
-	c.setScale(5, 5, 5);
 
 	//create the squish object from model
 	squish.initGeom(objectFilePath);
@@ -408,10 +399,6 @@ void Solution::winResize(int width, int height)
 
 int Solution::updateObjects(int numFrames)
 {
-	// recall that this will be carried out in the model space
-	//testSphere.incrementRotations(0.5, 0, 0);
-	t.incrementRotations(0, 0, 0.5);
-	c.incrementRotations(0.5, 0, 0.5);
 	squish.updateSquish(3);
 	hand.setHeightPosition(squish.getTopPosition() + handAdjust);
 	glutPostRedisplay();

@@ -40,11 +40,9 @@
 #include "GL/glew.h"
 #include "GL/glut.h"
 
-#include "Triangle.h"
-#include "Cube.h"
 #include "Hand.h"
 #include "Squish.h"
-//
+
 #include "camera.h"
 #include "Light.h"
 #include "Texture.h"
@@ -87,8 +85,6 @@ public:
 
 private:
 	Shader shader;
-	Triangle t;
-	Cube c;
 	Hand hand;
 	Squish squish;
 	float handAdjust;
