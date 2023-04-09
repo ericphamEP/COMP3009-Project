@@ -491,16 +491,17 @@ void GraphicsObject::initGeom(char* filepath)
 	topPosition = NULL;
 	bottomPosition = NULL;
 
-	m_vertices.reserve(1000000);
-	m_indices_tri.reserve(1000000);
-	m_indices_quad.reserve(1000000);
-	m_indices_pent.reserve(1000000);
+	m_vertices.reserve(100000);
+	m_indices_tri.reserve(100000);
+	
+	std::vector<Vector3f> vertexCoordinates;
+	vertexCoordinates.reserve(100000);
 
 	std::vector<Vector2f> textureCoordinates; // simple implementation: put all vtx coords in here then connect them during f part
-	textureCoordinates.reserve(1000000);
+	textureCoordinates.reserve(100000);
 
 	std::vector<Vector3f> vertexNormals; // simple implementation: put all vtx coords in here then connect them during f part
-	vertexNormals.reserve(1000000);
+	vertexNormals.reserve(100000);
 
 	std::ifstream in(filepath, std::ios::in);
 	if (!in) {
@@ -512,19 +513,19 @@ void GraphicsObject::initGeom(char* filepath)
 	while (std::getline(in, line)) {
 		// vertices
 		if (line.substr(0, 2) == "v ") {
-			VERTEX vertex;
-			int matches = sscanf_s(line.c_str(), "v %f %f %f\n", &vertex.pos.x, &vertex.pos.y, &vertex.pos.z);
+			Vector3f tempVtxCoords;
+			int matches = sscanf_s(line.c_str(), "v %f %f %f\n", &tempVtxCoords.x, &tempVtxCoords.y, &tempVtxCoords.z);
 			if (matches != 3) {
 				printf("WARNING: Cannot parse vertices.\n");
 			}
 
-			m_vertices.push_back(vertex);
+			vertexCoordinates.push_back(tempVtxCoords);
 
-			if (topPosition == NULL || topPosition < vertex.pos.y) {
-				topPosition = vertex.pos.y;
+			if (topPosition == NULL || topPosition < tempVtxCoords.y) {
+				topPosition = tempVtxCoords.y;
 			}
-			if (bottomPosition == NULL || bottomPosition > vertex.pos.y) {
-				bottomPosition = vertex.pos.y;
+			if (bottomPosition == NULL || bottomPosition > tempVtxCoords.y) {
+				bottomPosition = tempVtxCoords.y;
 			}
 		}
 		else if (line.substr(0, 2) == "vt") { //check for texture co-ordinate
@@ -546,52 +547,57 @@ void GraphicsObject::initGeom(char* filepath)
 		// faces
 		else if (line.substr(0, 2) == "f ") {
 			unsigned int v[5], vt[5], vn[5];
+			Vertex VTX;
 			int matches = sscanf_s(line.c_str(), "f %d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d\n", &v[0], &vt[0], &vn[0], &v[1], &vt[1], &vn[1], &v[2], &vt[2], &vn[2], &v[3], &vt[3], &vn[3], &v[4], &vt[4], &vn[4]);
 			if (matches == 9) { // 3 vertex face - triangle
 				for (int i = 0; i < 3; i++) {
-					m_indices_tri.push_back(v[i] - 1);
-					VTX.pos
-					m_vertices[v[i] - 1].texCoord = textureCoordinates[vt[i] - 1];
-					m_vertices[v[i] - 1].normal = vertexNormals[vn[i] - 1];
+					VTX.pos = vertexCoordinates[v[i] - 1];
+					VTX.texCoord = textureCoordinates[vt[i] - 1];
+					VTX.normal = vertexNormals[vn[i] - 1];
+					m_vertices.push_back(VTX);
+					m_indices_tri.push_back((int)m_vertices.size() - 1);
 				}
 			}
 			else if (matches == 12) { // 4 vertex face - quad
 				//split quads into 2 triangles
-				//triangle 1
-				m_indices_tri.push_back(v[0] - 1);
-				m_indices_tri.push_back(v[1] - 1);
-				m_indices_tri.push_back(v[2] - 1);
-				
-				//triangle 2
-				m_indices_tri.push_back(v[0] - 1);
-				m_indices_tri.push_back(v[2] - 1);
-				m_indices_tri.push_back(v[3] - 1);
-
 				for (int i = 0; i < 4; i++) {
-					m_vertices[v[i] - 1].texCoord = textureCoordinates[vt[i] - 1];
-					m_vertices[v[i] - 1].normal = vertexNormals[vn[i] - 1];
+					VTX.pos = vertexCoordinates[v[i] - 1];
+					VTX.texCoord = textureCoordinates[vt[i] - 1];
+					VTX.normal = vertexNormals[vn[i] - 1];
+					m_vertices.push_back(VTX);
 				}
+				//triangle 1
+				m_indices_tri.push_back((int)m_vertices.size() - 4);
+				m_indices_tri.push_back((int)m_vertices.size() - 3);
+				m_indices_tri.push_back((int)m_vertices.size() - 2);
+				//triangle 2
+				m_indices_tri.push_back((int)m_vertices.size() - 4);
+				m_indices_tri.push_back((int)m_vertices.size() - 2);
+				m_indices_tri.push_back((int)m_vertices.size() - 1);
+
 			}
 			else if (matches == 15) { // 5 vertex face - pent
 				//split pentagons into 3 triangles
-				//triangle 1
-				m_indices_tri.push_back(v[0] - 1);
-				m_indices_tri.push_back(v[1] - 1);
-				m_indices_tri.push_back(v[2] - 1);
-				//triangle 2
-				m_indices_tri.push_back(v[0] - 1);
-				m_indices_tri.push_back(v[2] - 1);
-				m_indices_tri.push_back(v[3] - 1);
-				//triangle 3
-				m_indices_tri.push_back(v[0] - 1);
-				m_indices_tri.push_back(v[3] - 1);
-				m_indices_tri.push_back(v[4] - 1);
-
-
 				for (int i = 0; i < 5; i++) {
-					m_vertices[v[i] - 1].texCoord = textureCoordinates[vt[i] - 1];
-					m_vertices[v[i] - 1].normal = vertexNormals[vn[i] - 1];
+					VTX.pos = vertexCoordinates[v[i] - 1];
+					VTX.texCoord = textureCoordinates[vt[i] - 1];
+					VTX.normal = vertexNormals[vn[i] - 1];
+					m_vertices.push_back(VTX);
 				}
+				
+				//triangle 1
+				m_indices_tri.push_back((int)m_vertices.size() - 5);
+				m_indices_tri.push_back((int)m_vertices.size() - 4);
+				m_indices_tri.push_back((int)m_vertices.size() - 3);
+				//triangle 2
+				m_indices_tri.push_back((int)m_vertices.size() - 5);
+				m_indices_tri.push_back((int)m_vertices.size() - 3);
+				m_indices_tri.push_back((int)m_vertices.size() - 2); 
+				//triangle 3
+				m_indices_tri.push_back((int)m_vertices.size() - 5);
+				m_indices_tri.push_back((int)m_vertices.size() - 2);
+				m_indices_tri.push_back((int)m_vertices.size() - 1);
+				
 			}
 			else {
 				printf("WARNING: Object file cannot be imported. Try a differnt file.\n");
@@ -602,7 +608,7 @@ void GraphicsObject::initGeom(char* filepath)
 
 	}
 
-	printf("\nThere are %d triangles, %d quads and %d pents.\n", ((int)m_indices_tri.size())/3, (int)m_indices_quad.size()/3, (int)m_indices_pent.size()/3);
+	printf("\nThere are %d triangles.\n", ((int)m_indices_tri.size())/3);
 	// set y position to 'floor'
 	position = Vector3f(0, -bottomPosition, 0);
 	computeModelMat();

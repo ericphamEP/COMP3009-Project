@@ -99,8 +99,8 @@ protected:
 	float       bottomPosition;
 	Vertices    m_vertices;
 	Indices		m_indices_tri;
-	Indices		m_indices_quad;
-	Indices		m_indices_pent;
+	Indices		m_indices_quad; //should remove these
+	Indices		m_indices_pent; //and these
 
 	GLuint vtxVBO;  // the vertex buffer object which holds the vertices data
 	GLuint vao;  // the vertex array object which holds all the data required for renderring.
