@@ -3,38 +3,22 @@
 #ifndef LIGHT_HEADER
 #define LIGHT_HEADER
 
-/*
-* File name Light.h
-
-Purpose: store the information about the lights and transfer the data to the shader
-
-
-
-*/
-
-/***************************************************************************/
-//	INCLUDES
-
+// INCLUDES
 #include "GL/nuss_vector.h"
 #include "shader.h"
 
-/***************************************************************************/
 // STRUCTURES
 
-// Point light properties
 typedef struct pointLight {
 	Vector3f lightIntensity;		// light intensity
 	Vector3f ambientIntensity;		// intesity of ambient colour
 	Vector3f worldPos;				// position of the light in the world
 	float specularPower;			// specular light power factor
-	int enableAmbientLight;		// determines whether to use the ambient light compnent
-	int enableDiffuseLight;		// determines whether to use the diffuse light compnent
+	int enableAmbientLight;			// determines whether to use the ambient light compnent
+	int enableDiffuseLight;			// determines whether to use the diffuse light compnent
 	int enableSpecularLight;		// determines whether to use the specular light compnent
 } PointLight;
 
-
-
-// light attenuation  
 // attenuation = 1/(a + b * d + c * d * d)
 typedef struct attenuation {
 	float a;
@@ -42,9 +26,6 @@ typedef struct attenuation {
 	float c;
 }Attenuation;
 
-
-
-// spot light properties
 typedef struct spotLight {
 	Vector3f lightIntensity;		// light intensity
 	Vector3f ambientIntensity;		// intesity of ambient colour
@@ -56,19 +37,9 @@ typedef struct spotLight {
 }SpotLight;
 
 
-
-
-
-/***************************************************************************/
 //DEFINES
-
 #define POINT_LIGHT 1
 #define SPOT_LIGHT 2
-
-/***************************************************************************/
-// PROTOTYPES
-
-/***************************************************************************/
 
 
 class Light
@@ -86,8 +57,5 @@ public:
 private:
 	PointLight pointLight;
 };
-
-
-
 
 #endif

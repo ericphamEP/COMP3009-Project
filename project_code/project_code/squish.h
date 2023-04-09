@@ -2,8 +2,6 @@
 #ifndef SQUISH_HEADER
 #define SQUISH_HEADER
 
-// INCLUDES 
-
 #include "graphicsObject.h"
 
 
@@ -18,10 +16,7 @@ public:
     void setScale(float, float, float);
     void updateSquish(float);
     float getTopPosition();
-    int render();
     int render(Shader shader);
-
-
 
 private:
     bool        squishDown;

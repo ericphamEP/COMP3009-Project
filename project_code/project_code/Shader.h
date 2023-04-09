@@ -3,7 +3,6 @@
 #ifndef SHADER_HEADER
 #define SHADER_HEADER
 
-
 //=============================================================================
 // shader.h
 //
@@ -35,17 +34,12 @@
 
 //=============================================================================
 
-
 #include <windows.h>
-
-
 #include "GL/glew.h"
 #include "GL/nuss_matrix.h"
-
-
 #include "GL/glut.h"
-
 #include "gl/gl.h"
+
 
 class Shader
 {
@@ -53,11 +47,10 @@ public:
 	Shader(void);
 	~Shader(void);
 
-	// creates a shader program from files vsFileName and fsFileName
 	int createShader(char * vsFileName, char * fsFileName);
 	int createFromFiles(char** vert, char** frag);
 
-	GLuint	getProgId() const { return shaderProgramid; }
+	GLuint getProgId() const { return shaderProgramid; }
 
 	int printShaderStatus(void);
 	void useProgram(int useProg);
@@ -75,14 +68,9 @@ private:
 
 	char* readCode(char* fileName);
 	int createShaderObj(char* fileName, int shaderType, GLuint* shaderid);
-	// functions creates a shader program.  The two shader programs (vertex and fragment) were already compiled.
 	GLint createShaderProgram(GLint vertShaderid, GLint fragShaderid, GLuint* shaderProgId);
 	int createShaderProgram(char* vsFileName, char* fsFileName, GLuint* shaderProgramid);
 	int	filesExist(char** fileNames);
-
-
-
 };
-
 
 #endif

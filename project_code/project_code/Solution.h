@@ -2,8 +2,6 @@
 #ifndef SOLUTION_HEADER
 #define SOLUTION_HEADER
 
-
-
 //=============================================================================
 // solution.h
 //
@@ -34,24 +32,17 @@
 
 //=============================================================================
 
-
-
-
 #include "GL/glew.h"
 #include "GL/glut.h"
 
-#include "Triangle.h"
-#include "Cube.h"
 #include "Hand.h"
 #include "Squish.h"
-//
+
 #include "camera.h"
 #include "Light.h"
 #include "Texture.h"
 
-
-
-#define UPDATE_RENDERRED_OBJECTS 1000
+#define UPDATE_RENDERED_OBJECTS 1000
 #define FRAME_TIME 30
 
 class Solution
@@ -59,11 +50,8 @@ class Solution
 public:
 	Solution();
 	~Solution();
-	// initializing the opengl functions and windows
 	int initOpenGL();
 
-
-	// static callback function 
 	static void renderCB();
 	static void keyboardCB(unsigned char key, int x, int y);
 	static void specialKeyboardCB(int key, int x, int y);
@@ -71,24 +59,17 @@ public:
 	static void timerCB(int operation);
 
 	static void setSolution(Solution * _sol);
-
-	// generaL shader that will be used by all objects
-	// initialization of the solution
 	int initSolution(char*, char*);
 	
-
 	void render();
 	void keyboard(unsigned char key, int x, int y);
 	void specialKeyboard(int key, int x, int y);
 	void winResize(int width, int height);
 	int timer(int operation);
-
 	int updateObjects(int numFrames);
 
 private:
 	Shader shader;
-	Triangle t;
-	Cube c;
 	Hand hand;
 	Squish squish;
 	float handAdjust;
@@ -100,7 +81,5 @@ private:
 	Light light;
 	Texture squishTexture, handTexture;
 };
-
-
 
 #endif

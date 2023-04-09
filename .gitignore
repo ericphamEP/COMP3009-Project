@@ -11,4 +11,3 @@
 /project_code/x64/*
 /project_code/.vs/*
 !/.gitignore
-/project_code/.vs/project_code/v17/.suo

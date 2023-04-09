@@ -5,7 +5,7 @@ struct fragData{
 	vec3 worldPos; 
 	vec4 colour;
 	vec2 texCoords;
-} ;
+};
 
 uniform mat4 view; 
 uniform mat4 model; 

@@ -31,39 +31,28 @@
 //=============================================================================
 
 
-
 #include "stdio.h"
 #include "stdlib.h"
 #include "Shader.h"
 
-
 #define NUSS_DEBUG 0
-/******************************************************************************/
-// Constructor
+
 
 Shader::Shader(void) : shaderProgramid(-1), vertShaderid(-1), fragShaderid(-1)
 {
 
 }
 
-
-/******************************************************************************/
-/* destructor */
-
 Shader::~Shader(void)
 {
 }
 
-
-/******************************************************************/
 char* Shader::readCode(char* fileName)
 {
 	//printf("Read file: %s\n", fileName);
 	char* shaderCode = NULL;
 	int codeLength = 0;
 	FILE* fp = NULL;
-
-	// check for error in file name
 
 	fopen_s(&fp, fileName, "r");	// open file and check for errors
 	if (fp == NULL) { return NULL; }
@@ -87,16 +76,13 @@ char* Shader::readCode(char* fileName)
 	return shaderCode;
 }
 
-
-
-/******************************************************************************/
 /* create the shaders
 
 input:
-fileName - file name of shader.  Path is assume to be the project.
+fileName - file name of shader. Path is assume to be the project.
 Otherwise, pass in the directory as well
 
-shaderType - can either be vertex shader or fragment shader.  The type
+shaderType - can either be vertex shader or fragment shader. The type
 must correspond to the OpenGL shader types.
 
 Output:
@@ -105,14 +91,11 @@ shaderid - a handle to the shader.
 return:
 0 - if successfull
 -1 if error
-
 */
-
 int Shader::createShaderObj(char* fileName, int shaderType, GLuint* shaderid)
 {
 	char* code = NULL;
 	int rc = 0;
-
 
 	// create a shader handle
 	*shaderid = glCreateShader(shaderType);
@@ -149,12 +132,7 @@ int Shader::createShaderObj(char* fileName, int shaderType, GLuint* shaderid)
 	if (code != NULL) free(code);	// free the source code of the shader
 
 	return(rc);
-
 }
-
-
-
-/***************************************************************************************************************/
 
 /* functions creates a shader program.  The two shader programs (vertex and fragment) were already compiled.
 input:
@@ -169,11 +147,10 @@ return:
 0 - if successfull
 -1 if error
 */
-
 GLint Shader::createShaderProgram(GLint vertShaderid, GLint fragShaderid, GLuint* shaderProgId)
 {
-
 	int rc = 0;
+
 	// get a handle to the shader program
 	shaderProgramid = glCreateProgram();
 	// connect the shaders subprogram to the "main" program
@@ -215,15 +192,10 @@ GLint Shader::createShaderProgram(GLint vertShaderid, GLint fragShaderid, GLuint
 	}
 	else rc = 0;
 
-	//printShaderStatus();  // may want to remove it.
-
 	if (shaderProgId != NULL) *shaderProgId = shaderProgramid;
 err:
 	return (rc);
 }
-
-
-/***************************************************************************************************************/
 
 /* creates a shader program from files vsFileName and fsFileName
 
@@ -235,14 +207,11 @@ fsFileName - name of fragment shader
 output:
 none
 
-
 return:
 0 if succssfull
 !=0 - if error
 
 */
-
-
 int Shader::createShader(char * vsFileName, char * fsFileName)
 {
 	//std::cout << "Vtx shader: " << vsFileName << std::endl;
@@ -260,11 +229,6 @@ int Shader::createShader(char * vsFileName, char * fsFileName)
 	return(rc);
 }
 
-
-
-
-/***************************************************************************************************************/
-
 /* creates a shader program from files vsFileName and fsFileName
 
 input:
@@ -279,10 +243,7 @@ internally.
 return:
 0 if succssfull
 !=0 - if error
-
 */
-
-
 int Shader::createShaderProgram(char* vsFileName, char* fsFileName, GLuint* shaderProgramid)
 {
 
@@ -299,12 +260,7 @@ int Shader::createShaderProgram(char* vsFileName, char* fsFileName, GLuint* shad
 	return(rc);
 }
 
-
-
-
-/*********************************************************************/
 // print the status and some information about the linked shader program
-
 int Shader::printShaderStatus(void)
 {
 	int rc;
@@ -353,18 +309,12 @@ int Shader::printShaderStatus(void)
 	return 0;
 }
 
-
-/*********************************************************************/
 /* Enable or disable shader program to be current program
 
 input:
 useProg ==  0 disable the progrdam
 useProg != 0 set the shader to be used
-
 */
-
-
-
 void Shader::useProgram(int useProg) {
 	if (useProg != 0) {
 		glUseProgram(shaderProgramid);
@@ -375,12 +325,8 @@ void Shader::useProgram(int useProg) {
 }
 
 
-/*********************************************************************/
 /*
-Copy a matrix to the shader
-This is a helper function since this operation is used quite often
-
-
+Copy matrix to shader
 */
 int Shader::copyMatrixToShader(Matrix4f matrix, const char* name) {
 	int location;
@@ -395,17 +341,12 @@ int Shader::copyMatrixToShader(Matrix4f matrix, const char* name) {
 }
 
 
-/*********************************************************************/
 /*
-Copy an array of floats to the shader
-This is a helper function since this operation is used quite often
-input
+Copy array of floats to shader
 v - the array
 vectorSize - number of elements in the array
 elementSize - number of floats in an element
 name - name of variable in the shader
-
-
 */
 int Shader::copyFloatVectorToShader(float* v, int vectorSize, int elementSize, const char* name)
 {
@@ -446,28 +387,20 @@ int Shader::copyFloatVectorToShader(float* v, int vectorSize, int elementSize, c
 		}		rc = -1;
 	}
 
-
 	return(0);
 }
 
-/*********************************************************************/
 /*
-Copy an array of integers to the shader
-this is a helper function since this operation is used quite often
-
-input
-v- the array
+Copy array of integers to shader
+v - the array
 vectorSize - number of elements in the array
 elementSize - number of integers in an element
 name - name of variable in the shader
-
 */
 int Shader::copyIntVectorToShader(int* v, int vectorSize, int elementSize, const char* name) {
 	int location;
 	int rc;
 	int loaded[10] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-
-
 
 	location = glGetUniformLocation(getProgId(), name);
 	// assert(location != -1);  DN
@@ -529,11 +462,9 @@ int Shader::copyIntToShader(int i, const char* name) {
 	return (0);
 }
 
-/*****************************************************************************************/
-
 /*
-Purpose: create a shader program from a single vertex file
-and a single fragment file
+Purpose: create a shader program from a vertex file
+and fragment file
 
 Input:
 vertFiles -  an arrray of file names that when combined make the shader code.
@@ -546,10 +477,7 @@ must be NULL (the sentinel is a NULL)
 Return:
 0 - is success
 1 - if not successful
-
 */
-
-
 int Shader::createFromFiles(char** vertFiles, char** fragFiles)
 
 {
@@ -558,7 +486,6 @@ int Shader::createFromFiles(char** vertFiles, char** fragFiles)
 	char tempFragFile[128];
 	int i;
 	std::string sysCmd;
-
 
 	// check if all files exist
 	rc = filesExist(vertFiles);
@@ -598,9 +525,6 @@ int Shader::createFromFiles(char** vertFiles, char** fragFiles)
 	// execute the command
 	system(sysCmd.c_str());
 
-
-
-
 	// create the shader program from a single file
 	rc = createShader(&tempVertFile[1], &tempFragFile[1]);
 	rc = remove(&tempVertFile[1]);
@@ -609,17 +533,13 @@ err:
 	return rc;
 }
 
-/***********************************************************************************/
 /*
-
 purpose: check if all files in the array exist
 
 input
 files - an array of files names.  The last element in the array is NULL
 */
-
 int Shader::filesExist(char** fileNames)
-
 {
 	int rc = 0;
 	char** p;
@@ -634,8 +554,5 @@ int Shader::filesExist(char** fileNames)
 		fclose(fid);
 	}
 
-
 	return(rc);
-
 }
-

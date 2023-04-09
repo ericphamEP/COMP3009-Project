@@ -3,7 +3,6 @@
 
 
 #include <vector>
-
 #include "GL/nuss_math.h"
 
 
@@ -16,7 +15,6 @@ struct Vertex {
 		pos = _pos;
 		col = _col;
 	}
-
 	Vector4f pos;
 	Vector4f col;
 };
@@ -25,7 +23,6 @@ typedef struct Vertex Vertex;
 
 typedef std::vector<Vertex> Vertices;
 typedef std::vector<unsigned int>	Indices;
-
 
 #if 0
 class Model {
