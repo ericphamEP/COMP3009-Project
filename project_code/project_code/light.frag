@@ -107,7 +107,7 @@ vec3 calcDiffuseLight(
 }
 
 vec3 calcSpecularLight(
-	 material m,			// the specular matrial
+	material m,				// the specular matrial
 	vec3 lightVector,		// the light vector, 
 	vec3 normal,			// the normal 
 	vec3 lightIntensity,	// the specular light intensity  
@@ -117,15 +117,15 @@ vec3 calcSpecularLight(
 	vec3 colour = vec3(0,0,0);
 
 	// compute  the eye vector 
-	vec3 eyeVector = normalize(-eyeWorldPos);
+	vec3 eyeVector = -normalize(eyeWorldPos - frag.worldPos);
 
-	// compute  the reflection vector
+	// compute the reflection vector
 	vec3 reflection = reflect(-normalize(lightVector), normalize(normal));
 
 	// compute the specular impact 
 	float specImpact = pow(max(dot(reflection, eyeVector), 0.0), specPower);
 
-	// copute the colour
+	// compute the colour
 	colour = lightIntensity * m.specularMaterial * specImpact;
 
 	return(colour);

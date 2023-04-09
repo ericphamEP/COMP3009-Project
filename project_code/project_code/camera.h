@@ -50,20 +50,23 @@ public:
 	Vector3f getUpVector(void);
 	float getSpeed(void);
 
-	void setCamera(Vector3f position, Vector3f lookAtPoint, Vector3f upVector);
+	void setCamera(Vector3f position, Vector3f lookAtPoint, Vector3f upVector, float radius, float angle);
 
 	Vector3f changePositionDelta(float dx, float dy, float dz);	// change position by relative amount
-	Vector3f changePositionDelta(Vector3f *dv);				// change position by relative amount
+	Vector3f changePositionDelta(Vector3f *dv);					// change position by relative amount
 	Vector3f changeAbsPosition(float x, float y, float z);		// change to a new position in space
 	Vector3f changeAbsPosition(Vector3f *v);					// change to a new position in space
-	Vector3f moveForward(float numUnits);	// moves the camera forward by the numUnits units along the lookAtVector
-	Vector3f moveBackward(float numUnits);  // moves the camera backward numUnits units along the lookAtVector
-	Vector3f moveRight(float numUnits);
-	Vector3f moveLeft(float numUnits);
+	Vector3f moveForward(float numUnits);						// moves the camera forward by the numUnits units along the lookAtVector
+	Vector3f moveBackward(float numUnits);						// moves the camera backward numUnits units along the lookAtVector
+	Vector3f moveRight(float numDegrees);
+	Vector3f moveLeft(float numDegrees);
+	Vector3f moveUp(float numUnits);
+	Vector3f moveDown(float numUnits);
+	Vector3f computePosition();
 
 	int updateSpeed(float speed);
 	int changeLookAtVector(float x, float y, float z);
-	int zoomIn(void);
+	int zoomIn(void);// to remove?
 	int zoomIn(float zoom);
 	int zoomOut(void);
 	int zoomOut(float zoom);
@@ -83,6 +86,8 @@ private:
 	Vector3f upVector;
 	Vector3f lookAtVector;
 	float speed;
+	float radius;
+	float angle;
 
 	// Perspective projection fields
 	float fieldOfView;

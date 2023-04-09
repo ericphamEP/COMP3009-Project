@@ -55,6 +55,7 @@ public:
 	static void renderCB();
 	static void keyboardCB(unsigned char key, int x, int y);
 	static void specialKeyboardCB(int key, int x, int y);
+	static void mouseCB(int button, int state, int x, int y);
 	static void winResizeCB(int width, int height);
 	static void timerCB(int operation);
 
@@ -64,6 +65,7 @@ public:
 	void render();
 	void keyboard(unsigned char key, int x, int y);
 	void specialKeyboard(int key, int x, int y);
+	void mouse(int button, int state, int x, int y);
 	void winResize(int width, int height);
 	int timer(int operation);
 	int updateObjects(int numFrames);
