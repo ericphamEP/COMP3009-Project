@@ -56,6 +56,7 @@ public:
 	static void keyboardCB(unsigned char key, int x, int y);
 	static void specialKeyboardCB(int key, int x, int y);
 	static void mouseCB(int button, int state, int x, int y);
+	static void mouseMoveCB(int x, int y);
 	static void winResizeCB(int width, int height);
 	static void timerCB(int operation);
 
@@ -66,6 +67,7 @@ public:
 	void keyboard(unsigned char key, int x, int y);
 	void specialKeyboard(int key, int x, int y);
 	void mouse(int button, int state, int x, int y);
+	void mouseMove(int x, int y);
 	void winResize(int width, int height);
 	int timer(int operation);
 	int updateObjects(int numFrames);
@@ -75,6 +77,9 @@ private:
 	Hand hand;
 	Squish squish;
 	float handAdjust;
+	int currX;
+	int currY;
+
 	char* objectFilePath;
 	int numFrames;
 	static Solution *sol;

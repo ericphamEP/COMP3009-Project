@@ -138,7 +138,7 @@ Purpose:
 Descripton: obtains the lookAt point of the camera
 Return: Vector3f - camera lookAt point
 */
-Vector3f Camera::getLookAtPoint(void)	// DN 26/10/2015
+Vector3f Camera::getLookAtPoint(void)
 {
 	return (position + lookAtVector);
 }
@@ -147,7 +147,7 @@ Vector3f Camera::getLookAtPoint(void)	// DN 26/10/2015
 Descripton: Obtains the camera's up vector
 Return: Vector3f - Camera upVector
 */
-Vector3f Camera::getUpVector(void)		// DN 26/10/2015
+Vector3f Camera::getUpVector(void)
 {
 	return (upVector);
 }
@@ -390,9 +390,14 @@ Return: Vector3f - position
 */
 Vector3f Camera::moveUp(float numUnits)
 {
-	position.y += numUnits;
+	float newPosY = position.y + numUnits;
+	if (newPosY > 80) {
+		newPosY = 80;
+	} else if (newPosY < -20) {
+		newPosY = -20;
+	}
 	// update the abs position
-	return computePosition();
+	return changeAbsPosition(position.x, newPosY, position.z);
 }
 
 /*
