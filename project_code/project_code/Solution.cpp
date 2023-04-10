@@ -65,6 +65,7 @@ int Solution::initOpenGL()
 	glutKeyboardFunc(Solution::keyboardCB);
 	glutSpecialFunc(Solution::specialKeyboardCB);
 	glutMouseFunc(Solution::mouseCB);
+	glutMotionFunc(Solution::mouseMoveCB);
 	glutTimerFunc(FRAME_TIME, Solution::timerCB, UPDATE_RENDERED_OBJECTS);
 
 	GLenum res = glewInit();
@@ -98,6 +99,12 @@ void Solution::specialKeyboardCB(int key, int x, int y)
 void Solution::mouseCB(int button, int state, int x, int y)
 {
 	sol->mouse(button, state, x, y);
+}
+
+// mouse motion callback function
+void Solution::mouseMoveCB(int x, int y)
+{
+	sol->mouseMove(x, y);
 }
 
 // window resize callback function
@@ -310,6 +317,10 @@ void Solution::mouse(int button, int state, int x, int y)
 	if (state == GLUT_DOWN) {
 		switch (button) {
 		case GLUT_LEFT_BUTTON:
+			currX = x;
+			currY = y;
+
+			// todo: handle squish on button press here
 			break;
 		case 3:
 			cam.moveForward(NORMAL_SPEED * factor);
@@ -319,6 +330,22 @@ void Solution::mouse(int button, int state, int x, int y)
 			break;
 		}
 	}
+}
+
+// mouse motion handling function
+void Solution::mouseMove(int x, int y)
+{
+	//printf("mouse movement %d %d", x, y);
+	// handle horizontal movement
+	int deltaX = currX - x;
+	cam.moveRight((float).002 * factor * deltaX);
+	currX = x;
+
+	// handle vertical movement
+	int deltaY = currY - y;
+	cam.moveDown((float).2 * factor * deltaY);
+	currY = y;
+
 }
 
 // window resize handling function.  
