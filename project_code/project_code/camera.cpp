@@ -43,7 +43,7 @@ Descripton: Setup camera attributes.
 Return: n/a
 */
 Camera::Camera(void): position(0, 0, 100), lookAtVector(0, 0, -1), upVector(0.0,1.0,0.0)
-, speed(0), nearPlane(0.1), farPlane(1000), fieldOfView(60), aspectRatio(1.0)
+, radius(1), angle(0), speed(0), nearPlane(0.1), farPlane(1000), fieldOfView(60), aspectRatio(1.0)
 {
 	viewMat = Matrix4f::cameraMatrix(position, lookAtVector, upVector);
 	projMat = Matrix4f::symmetricPerspectiveProjectionMatrix(fieldOfView, aspectRatio, nearPlane, farPlane);
@@ -181,15 +181,33 @@ Vector3f - position
 */
 Vector3f Camera::changeAbsPosition(float x, float y, float z)
 {
+	Vector3f lookAtPoint = getLookAtPoint();
+
 	// set the position to the given position
 	position.x = x;
 	position.y = y;
 	position.z = z;
 
-	// update the view matrix
-	viewMat = Matrix4f::cameraMatrix(position, position + lookAtVector, upVector);
+	lookAtVector = lookAtPoint - position;
+
+	// update the view matrix, keep look at point the same
+	viewMat = Matrix4f::cameraMatrix(position, lookAtPoint, upVector);
 
 	return (position);
+}
+
+/*
+Descripton: changes the camera's position to a new position around a circle
+Return:
+Vector3f - position
+*/
+
+Vector3f Camera::computePosition()
+{
+	float x = radius * sin(angle);
+	float z = radius * cos(angle);
+
+	return changeAbsPosition(x, position.y, z);
 }
 
 /*
@@ -198,31 +216,32 @@ Return:
 Vector3f - position
 */
 
-Vector3f Camera::changeAbsPosition(Vector3f *v)
+Vector3f Camera::changeAbsPosition(Vector3f* v)
 {
 	// set the position to the given position
 	return changeAbsPosition(v->x, v->y, v->z);
 }
 
 /*
-Purpose: changes the camera's position along the LootAt vector
-Descripton: move the camera forward by the numUnits along the looAtVector
+Purpose: changes the camera's position along angle
+Descripton: move the camera forward by the numUnits along the circle
 
 Return:
 Vector3f - position
 */
 Vector3f Camera::moveForward(float numUnits)
 {
-	// update the position along the lookAt vector
-	position += lookAtVector * numUnits;
-
+	radius -= numUnits;
+	if (radius < 1) {
+		radius = 1;
+	}
 	// update the abs position
-	return changeAbsPosition(&position);
+	return computePosition();
 }
 
 /*
-Purpose: changes the camera's position along the LootAt vector
-Descripton: move the camera backward by the numUnits along the looAtVector
+Purpose: changes the camera's position along angle
+Descripton: move the camera backward by the numUnits along the circle
 
 Return:
 Vector3f - position
@@ -261,8 +280,6 @@ int Camera::updateOrientation(Vector3f rotVector, float angleRad)
 	// find the upVector
 	upVector = Vector3f::cross(lookAtVector, xaxis);
 
-	// normalize the upVector and the lookAt Vector
-
 	return 0;
 }
 
@@ -287,23 +304,24 @@ Matrix4f Camera::getViewMatrix(Matrix4f *viewMatrix)
 Descripton: set camera parameters
 Return: void
 */
-void Camera::setCamera(Vector3f position, Vector3f lookAtPoint, Vector3f upVector)
+void Camera::setCamera(Vector3f position, Vector3f lookAtPoint, Vector3f upVector, float radius, float angle)
 {
 	// set the position
-	this->position = position;
+	this->radius = radius;
+	this->angle = angle;
+	this->position.y = position.y;
+
+	// update the view matrix
+	this->computePosition();
 
 	// set the lookAtVector
-	this->lookAtVector = lookAtPoint - position;
+	this->lookAtVector = Vector3f(0, lookAtPoint.y, 0) - position;
 
 	// set the upVector
 	this->upVector = upVector;
 
 	// normalize the vectors
-	this->lookAtVector.normalize();
 	this->upVector.normalize();
-
-	// update the view matrix
-	viewMat = Matrix4f::cameraMatrix(this->position, this->position + this->lookAtVector, this->upVector);
 }
 
 /*
@@ -335,7 +353,6 @@ int Camera::changeLookAtVector(float x, float y, float z)
 	lookAtVector.x = x;
 	lookAtVector.y = y;
 	lookAtVector.z = z;
-	// nomralize the vector
 
 	// update the view matrix
 	viewMat = Matrix4f::cameraMatrix(position, position + lookAtVector, upVector);
@@ -347,30 +364,44 @@ int Camera::changeLookAtVector(float x, float y, float z)
 Descripton: Moving the camera sideways to the right by numUnits
 Return: Vector3f - position
 */
-Vector3f Camera::moveRight(float numUnits)
+Vector3f Camera::moveRight(float numDegrees)
 {
-	// compute the the moving direction as a cross product between lookAtVector and upVector
-	Vector3f moveVector = Vector3f::cross(upVector, lookAtVector);
-
-	// normalize the move vector
-	moveVector.normalize();
-
-	// update the position along the vector
-	position += moveVector * numUnits;
-
-	// update the view matrix
-	viewMat = Matrix4f::cameraMatrix(position, position + lookAtVector, upVector);
-
-	return (position);
+	angle += numDegrees;
+	if (angle >= 360 || angle < 0) {
+		angle = fmod(angle, 360);
+	}
+	// update the abs position
+	return computePosition();
 }
 
 /*
 Descripton: Moving the camera sideways to the left by numUnits
 Return: Vector3f - position
 */
-Vector3f Camera::moveLeft(float numUnits)
+Vector3f Camera::moveLeft(float numDegrees)
 {
-	Vector3f pos = moveRight(-numUnits);
+	Vector3f pos = moveRight(-numDegrees);
+	return(pos);
+}
+
+/*
+Descripton: Moving the camera sideways to the right by numUnits
+Return: Vector3f - position
+*/
+Vector3f Camera::moveUp(float numUnits)
+{
+	position.y += numUnits;
+	// update the abs position
+	return computePosition();
+}
+
+/*
+Descripton: Moving the camera sideways to the left by numUnits
+Return: Vector3f - position
+*/
+Vector3f Camera::moveDown(float numUnits)
+{
+	Vector3f pos = moveUp(-numUnits);
 	return(pos);
 }
 

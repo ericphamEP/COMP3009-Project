@@ -11,3 +11,11 @@
 /project_code/x64/*
 /project_code/.vs/*
 !/.gitignore
+project_code/.vs/project_code/v17/.suo
+project_code/.vs/project_code/v17/Browse.VC.db
+project_code/.vs/project_code/v17/ipch/AutoPCH/2ee8249e5e8e6508/GRAPHICSOBJECT.ipch
+project_code/.vs/project_code/v17/ipch/AutoPCH/f7253f16bd8cc6d3/MAIN.ipch
+project_code/.vs/project_code/v17/ipch/AutoPCH/fbeeb07fee9e8549/SOLUTION.ipch
+project_code/Debug/project_code.Build.CppClean.log
+project_code/Debug/project_code.exe.recipe
+project_code/Debug/project_code.log

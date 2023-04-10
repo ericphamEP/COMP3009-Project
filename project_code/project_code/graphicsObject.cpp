@@ -1,4 +1,3 @@
-
 //=============================================================================
 // graphicsObject.c
 //
@@ -54,16 +53,24 @@ GraphicsObject::GraphicsObject() :
 	indVBO(-1),
 	numIndices(0)
 {
-	materials.ambientMaterial = Vector3f(0.2, 0.2, 0.2);
+	materials.ambientMaterial = Vector3f(0.3, 0.3, 0.3);
 	materials.diffuseMaterial = Vector3f(0.75, 0.75, 0.75);
 	materials.interalRadiation = Vector3f(0.5, 0.5, 0.5);
-	materials.specularMaterial = Vector3f(0.25, 0.25, 0.25);
+	materials.specularMaterial = Vector3f(0.8, 0.8, 0.8);
 	m_children.resize(0);
 }
+
+/***************************************************************************/
+
+
 
 GraphicsObject::~GraphicsObject()
 {
 }
+
+
+/***************************************************************************/
+
 
 int GraphicsObject::createVAO(Shader shader)
 {
@@ -127,12 +134,9 @@ int GraphicsObject::createVAO(Shader shader)
 
 		//glVertexAttribPointer(location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)relAddress);
 		glVertexAttribPointer(location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
-
-		//glEnableVertexAttribArray(location);
-		//glVertexAttribPointer(location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
 	}
 
-	//create index buffer
+	// create index buffer
 	glGenBuffers(1, &indVBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indVBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices_tri.size() * sizeof(GLuint), m_indices_tri.data(), GL_STATIC_DRAW);
@@ -146,6 +150,10 @@ err:
 	return(rc);
 }
 
+
+/*********************************************************************************/
+
+
 int GraphicsObject::loadMaterials(Shader shader)
 
 {
@@ -155,6 +163,9 @@ int GraphicsObject::loadMaterials(Shader shader)
 	shader.copyFloatVectorToShader((float*)&materials.interalRadiation, 1, 3, "gMaterial.interalRadiation");
 	return(0);
 }
+
+/*********************************************************************************/
+
 
 int GraphicsObject::render()
 {
@@ -189,6 +200,9 @@ int GraphicsObject::render()
 	return 0;
 }
 
+/*********************************************************************************/
+
+
 int GraphicsObject::render(Matrix4f worldMat)
 {
 #if 0
@@ -221,6 +235,9 @@ int GraphicsObject::render(Matrix4f worldMat)
 #endif
 	return 0;
 }
+
+/*********************************************************************************/
+//rendering with a shader
 
 int GraphicsObject::render(Shader shader)
 {
@@ -264,7 +281,9 @@ int GraphicsObject::render(Shader shader)
 	return 0;
 }
 
-// Set the initial orientation
+/*************************************************************/
+// sets the initial orientation
+
 void GraphicsObject::setModelRotations(float rollAngle, float pitchAngle, float yawAngle)
 {
 	this->rollAngle = rollAngle;
@@ -274,14 +293,19 @@ void GraphicsObject::setModelRotations(float rollAngle, float pitchAngle, float 
 	computeModelMat();
 }
 
-// Set the initial position
+/*************************************************************************/
+
+// set the initial position
+
 void GraphicsObject::setModelPosition(Vector3f position)
 {
 	this->position = position;
 	computeModelMat();
 }
 
-// Sets the initial orientation
+/*************************************************************/
+// sets the initial orientation
+
 void GraphicsObject::setWorldRotations(float rollAngle, float pitchAngle, float yawAngle)
 {
 	this->worldRollAngle = rollAngle;
@@ -291,14 +315,21 @@ void GraphicsObject::setWorldRotations(float rollAngle, float pitchAngle, float 
 	computeWorldMat();
 }
 
-// Set the initial position
+/*************************************************************************/
+
+// set the initial position
+
 void GraphicsObject::setWorldPosition(Vector3f position)
 {
 	this->worldPosition= position;
 	computeWorldMat();
 }
 
-// Increment the courrent rotation by the given amounts
+
+
+/*************************************************************/
+// increment the courrent rotation by the given amounts
+
 void GraphicsObject::incrementWorldRotations(float rollAngle, float pitchAngle, float yawAngle)
 {
 	this->worldRollAngle += rollAngle;
@@ -307,14 +338,20 @@ void GraphicsObject::incrementWorldRotations(float rollAngle, float pitchAngle, 
 	computeWorldMat();
 }
 
-// Set the initial position
+
+/*************************************************************************/
+
+// set the initial position
+
 void GraphicsObject::setModelPosition(float x, float y, float z)
 {
 	this->position = Vector3f(x, y, z);
 	computeModelMat();
 }
 
-// Increment the courrent rotation by the given amounts
+/*************************************************************/
+// increment the courrent rotation by the given amounts
+
 void GraphicsObject::incrementModelRotations(float rollAngle, float pitchAngle, float yawAngle)
 {
 	this->rollAngle += rollAngle;
@@ -323,35 +360,52 @@ void GraphicsObject::incrementModelRotations(float rollAngle, float pitchAngle, 
 	computeModelMat();
 }
 
-// Increment position by delta position
+/*************************************************************************/
+
+// increment positin by delta position
+
 void GraphicsObject::incrementModelPosition(Vector3f deltaPosition)
 {
 	this->position += deltaPosition;
 	computeModelMat();
 }
 
-// Increment position by delta
+/*************************************************************************/
+
+// increment position by delta
+
 void GraphicsObject::incrementModelPosition(float deltaX, float deltaY, float deltaZ)
 {
 	this->position += Vector3f(deltaX, deltaY, deltaZ);
 	computeModelMat();
 }
 
-// Set the initial scale
+
+/*************************************************************************/
+
+// set the initial position
+
 void GraphicsObject::setModelScale(Vector3f scale)
 {
 	this->scale = scale;
 	computeModelMat();
 }
 
-// Set the initial scale
+/*************************************************************************/
+
+// set the initial position
+
 void GraphicsObject::setModelScale(float scaleX, float scaleY, float scaleZ)
 {
 	this->scale = Vector3f(scaleX, scaleY, scaleZ);
 	computeModelMat();
 }
 
-// Compute the model transformation matrix
+
+/*************************************************************************/
+
+// Computer the model transformation matrix
+
 void GraphicsObject::computeModelMat()
 {
 	Matrix4f rotMat;  // rotation matrix;
@@ -376,7 +430,10 @@ void GraphicsObject::computeModelMat()
 }
 
 
-// Set the world transformation matrix
+/*************************************************************************/
+
+// set the world transformation matrix
+
 void GraphicsObject::computeWorldMat()
 {
 	Matrix4f rotMat;  // rotation matrix;
@@ -400,13 +457,20 @@ void GraphicsObject::computeWorldMat()
 	worldMat = transMat * worldMat;
 }
 
-// Adds a child to the list of chilren
+
+
+
+
+/*********************************************************************************/
+// adds a child to the list of chilren
+
 void GraphicsObject::addChild(GraphicsObject *obj)
 {
 	m_children.push_back(obj);
 }
 
-// Importa and initializes vertices and faces from .obj file
+
+
 void GraphicsObject::initGeom(char* filepath)
 {
 	topPosition = NULL;

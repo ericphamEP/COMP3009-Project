@@ -31,8 +31,8 @@
 #include "Solution.h"
 
 
-#define NORMAL_SPEED 2.0
-#define MAX_SPEED 2.0
+#define NORMAL_SPEED 3.0
+#define MAX_SPEED 3.0
 
 
 Solution *Solution::sol = NULL;
@@ -64,6 +64,7 @@ int Solution::initOpenGL()
 	glutReshapeFunc(Solution::winResizeCB);
 	glutKeyboardFunc(Solution::keyboardCB);
 	glutSpecialFunc(Solution::specialKeyboardCB);
+	glutMouseFunc(Solution::mouseCB);
 	glutTimerFunc(FRAME_TIME, Solution::timerCB, UPDATE_RENDERED_OBJECTS);
 
 	GLenum res = glewInit();
@@ -91,6 +92,12 @@ void Solution::keyboardCB(unsigned char key, int x, int y)
 void Solution::specialKeyboardCB(int key, int x, int y)
 {
 	sol->specialKeyboard(key, x, y);
+}
+
+// mouse callback function
+void Solution::mouseCB(int button, int state, int x, int y)
+{
+	sol->mouse(button, state, x, y);
 }
 
 // window resize callback function
@@ -156,7 +163,7 @@ int Solution::initSolution(char* objectFilePath, char* materialFilePath)
 	handAdjust = 0;
 	
 	// set the camera initial position
-	cam.setCamera(Vector3f(0, 0, 100), Vector3f(0, 0,0), Vector3f(0, 1, 0));
+	cam.setCamera(Vector3f(0, 20, 100), Vector3f(0, 20, 0), Vector3f(0, 1, 0), 100, 0);
 
 	//create light(s)
 	point.ambientIntensity = Vector3f(1.0, 1.0, 1.0);
@@ -244,22 +251,16 @@ void Solution::keyboard(unsigned char key, int x, int y)
 		cam.moveBackward(NORMAL_SPEED*factor);
 		break;
 	case 'a':
-		cam.yaw((float) .2*factor);
+		cam.moveLeft((float) .2*factor);
 		break;
 	case 'd':
-		cam.yaw((float)-.2*factor);
+		cam.moveRight((float) .2*factor);
 		break;
-	case 'g':
-		cam.moveRight(NORMAL_SPEED*factor);
-		break;
-	case 'G':
-		cam.moveLeft(NORMAL_SPEED*factor);
+	case 'x':
+		cam.moveUp(NORMAL_SPEED * factor);
 		break;
 	case 'z':
-		cam.zoomIn();
-		break;
-	case 'Z':
-		cam.zoomOut();
+		cam.moveDown(NORMAL_SPEED * factor);
 		break;
 	case 'h':
 		handAdjust += 0.5;
@@ -300,6 +301,23 @@ void Solution::specialKeyboard(int key, int x, int y)
 	case GLUT_KEY_DOWN:
 		cam.pitch((float)-.2*factor);
 		break;
+	}
+}
+
+// mouse handling function
+void Solution::mouse(int button, int state, int x, int y)
+{
+	if (state == GLUT_DOWN) {
+		switch (button) {
+		case GLUT_LEFT_BUTTON:
+			break;
+		case 3:
+			cam.moveForward(NORMAL_SPEED * factor);
+			break;
+		case 4:
+			cam.moveBackward(NORMAL_SPEED * factor);
+			break;
+		}
 	}
 }
 
