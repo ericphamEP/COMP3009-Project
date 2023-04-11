@@ -22,12 +22,21 @@ public:
     void incrementScaleMagnitude(float x, float y, float z);
     void setScaleFactor(float f);
     void incrementScaleFactor(float f);
+    void incrementMinSquishFactor(float f);
+    void incrementMaxSquishFactor(float f);
+    void setAutoMode(bool m);
+    void toggleAutoMode();
+    void startSquish();
 
 private:
     bool        squishDown;
+    bool        paused;
+    bool        autoMode;
     Vector3f    initScale;
     Vector3f    scaleMagnitude; // "acceleration" of scaling relative to each axis
     float       scaleFactor;    // "speed boost" to acceleration
+    float       minSquishFactor;
+    float       maxSquishFactor;
 };
 
 #endif

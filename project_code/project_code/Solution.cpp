@@ -34,6 +34,16 @@
 #define NORMAL_SPEED 3.0
 #define MAX_SPEED 3.0
 
+// MENU defines
+#define EXIT_PROGRAM 0
+#define TOGGLE_MODE 1
+#define SQUISH_MIN_UP 2
+#define SQUISH_MIN_DOWN 3
+#define SQUISH_MAX_UP 4
+#define SQUISH_MAX_DOWN 5
+#define SPEED_UP 6
+#define SPEED_DOWN 7
+
 
 Solution *Solution::sol = NULL;
 
@@ -67,6 +77,7 @@ int Solution::initOpenGL()
 	glutMouseFunc(Solution::mouseCB);
 	glutMotionFunc(Solution::mouseMoveCB);
 	glutTimerFunc(FRAME_TIME, Solution::timerCB, UPDATE_RENDERED_OBJECTS);
+	createMenu();
 
 	GLenum res = glewInit();
 	if (res != GLEW_OK) {
@@ -105,6 +116,11 @@ void Solution::mouseCB(int button, int state, int x, int y)
 void Solution::mouseMoveCB(int x, int y)
 {
 	sol->mouseMove(x, y);
+}
+
+void Solution::menuFunCB(int num)
+{
+	sol->menuFun(num);
 }
 
 // window resize callback function
@@ -160,6 +176,7 @@ int Solution::initSolution(char* objectFilePath, char* materialFilePath)
 	squish.initGeom(objectFilePath);
 	squish.optimizeScale();
 	squish.createVAO(shader);
+	squish.setAutoMode(true);
 
 	//create the hand object
 	hand.initGeom();
@@ -345,7 +362,7 @@ void Solution::mouse(int button, int state, int x, int y)
 			currX = x;
 			currY = y;
 
-			// todo: handle squish on button press here
+			squish.startSquish();
 			break;
 		case 3:
 			cam.moveForward(NORMAL_SPEED * factor);
@@ -371,6 +388,61 @@ void Solution::mouseMove(int x, int y)
 	cam.moveDown((float).2 * factor * deltaY);
 	currY = y;
 
+}
+
+void Solution::createMenu(void) {
+
+	// create a submenu
+	int submenu_id = glutCreateMenu(menuFunCB);
+	glutAddMenuEntry("Increase squish speed by 0.5", SPEED_UP);
+	glutAddMenuEntry("Lower squish speed by 0.5", SPEED_DOWN);
+	glutAddMenuEntry("Increase squish minimum by 0.1", SQUISH_MIN_UP);
+	glutAddMenuEntry("Lower squish minimum by 0.1", SQUISH_MIN_DOWN);
+	glutAddMenuEntry("Increase squish maximum by 0.1", SQUISH_MAX_UP);
+	glutAddMenuEntry("Lower squish maximum by 0.1", SQUISH_MAX_DOWN);
+
+	// create the main menu
+	int menu_id = glutCreateMenu(menuFunCB);
+	glutAddSubMenu("Adjust Squishing", submenu_id);
+	glutAddMenuEntry("Toggle Auto-Squish Mode", TOGGLE_MODE);
+	glutAddMenuEntry("Quit", EXIT_PROGRAM);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
+
+void Solution::menuFun(int num)
+{
+	int winId;
+	switch (num) {
+	case EXIT_PROGRAM:
+		winId = glutGetWindow();
+		glutDestroyWindow(winId);
+		exit(0);
+		break;
+	case TOGGLE_MODE:
+		squish.toggleAutoMode();
+		break;
+	case SPEED_UP:
+		squish.incrementScaleFactor(0.5);
+		break;
+	case SPEED_DOWN:
+		squish.incrementScaleFactor(-0.5);
+		break;
+	case SQUISH_MIN_UP:
+		squish.incrementMinSquishFactor(0.1);
+		break;
+	case SQUISH_MIN_DOWN:
+		squish.incrementMinSquishFactor(-0.1);
+		break;
+	case SQUISH_MAX_UP:
+		squish.incrementMaxSquishFactor(0.1);
+		break;
+	case SQUISH_MAX_DOWN:
+		squish.incrementMaxSquishFactor(-0.1);
+		break;
+	default:
+		break;
+	}
+	glutPostRedisplay();
 }
 
 // window resize handling function.  

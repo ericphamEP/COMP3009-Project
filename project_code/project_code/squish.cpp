@@ -3,8 +3,11 @@
 
 void Squish::initGeom(char* filepath)
 {
+    paused = true;
+    minSquishFactor = 0.5;
+    maxSquishFactor = 1.0;
     setScaleMagnitude(0.035, 0.05, 0.035);
-    setScaleFactor(2);
+    setScaleFactor(2.5);
     GraphicsObject::initGeom(filepath);
 }
 
@@ -27,12 +30,15 @@ void Squish::setScale(float scaleX, float scaleY, float scaleZ)
 
 void Squish::updateSquish()
 {
+    if (!autoMode && paused) {
+        return;
+    }
     if (squishDown == true) {
         scale.y -= scale.y * scaleMagnitude.y * scaleFactor;
         scale.x += scale.x * scaleMagnitude.x * scaleFactor;
         scale.z += scale.z * scaleMagnitude.z * scaleFactor;
 
-        if (scale.y < (0.5 * initScale.y)) {
+        if (scale.y <= (minSquishFactor * initScale.y)) {
             squishDown = false;
         }
     } else {
@@ -40,10 +46,13 @@ void Squish::updateSquish()
         scale.x -= scale.x * scaleMagnitude.x * scaleFactor;
         scale.z -= scale.z * scaleMagnitude.z * scaleFactor;
 
-        if (scale.y >= initScale.y) {
+        if (scale.y >= (maxSquishFactor * initScale.y)) {
             scale = initScale;
             setScale(initScale.x, initScale.y, initScale.z);
             squishDown = true;
+            if (!autoMode) {
+                paused = true;
+            }
         }
     }
 
@@ -117,4 +126,43 @@ void Squish::setScaleFactor(float f) {
 
 void Squish::incrementScaleFactor(float f) {
     setScaleFactor(scaleFactor + f);
+}
+
+void Squish::incrementMinSquishFactor(float f) {
+    minSquishFactor += f;
+    if (minSquishFactor < 0.2) {
+        minSquishFactor = 0.2;
+    } else if (minSquishFactor > 0.9) {
+        minSquishFactor = 0.9;
+    }
+}
+
+void Squish::incrementMaxSquishFactor(float f) {
+    maxSquishFactor += f;
+    if (maxSquishFactor < 1.0) {
+        maxSquishFactor = 1.0;
+    }
+    else if (maxSquishFactor > 5.0) {
+        maxSquishFactor = 5.0;
+    }
+}
+
+void Squish::setAutoMode(bool m) {
+    this->autoMode = m;
+}
+
+void Squish::toggleAutoMode() {
+    if (autoMode) {
+        setAutoMode(false);
+    }
+    else {
+        setAutoMode(true);
+        paused = false;
+    }
+}
+
+void Squish::startSquish() {
+    if (!autoMode) {
+        this->paused = false;
+    }
 }
