@@ -37,6 +37,7 @@
 
 #include "Hand.h"
 #include "Squish.h"
+#include "SkyBox.h"
 
 #include "camera.h"
 #include "Light.h"
@@ -79,6 +80,7 @@ private:
 	Shader shader;
 	Hand hand;
 	Squish squish;
+	SkyBox skybox;
 	float handAdjust;
 	int currX;
 	int currY;

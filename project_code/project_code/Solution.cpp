@@ -161,9 +161,27 @@ int Solution::initSolution(char* objectFilePath, char* materialFilePath)
 	Indices ind;
 	pointLight point;
 
+	char texSky1[] = "./project_code/cubemap/px.png";
+	char texSky2[] = "./project_code/cubemap/nx.png";
+	char texSky3[] = "./project_code/cubemap/py.png";
+	char texSky4[] = "./project_code/cubemap/ny.png";
+	char texSky5[] = "./project_code/cubemap/pz.png";
+	char texSky6[] = "./project_code/cubemap/nz.png";
+
+	char* texSky[6] = {
+		texSky1,
+		texSky2,
+		texSky3,
+		texSky4,
+		texSky5,
+		texSky6 };
+
 	// create the shader object
 	char vtxShader[] = "./project_code/light.vert";
 	char fragShader[] = "./project_code/light.frag";
+
+	char vtxSkyShader[] = "./project_code/skybox.vert";
+	char fragSkyShader[] = "./project_code/skybox.frag";
 
 	rc = shader.createShader(vtxShader, fragShader);
 	if (rc != 0) {
@@ -202,6 +220,9 @@ int Solution::initSolution(char* objectFilePath, char* materialFilePath)
 	squishTexture.loadTexture(materialFilePath, GL_TEXTURE_2D);
 	handTexture.loadTexture("./project_code/models/female-hand/textures/038F_05SET_04SHOT_DIFFUSE.png", GL_TEXTURE_2D);
 
+	skybox.init(vtxSkyShader, fragSkyShader);
+	skybox.loadTextureImages(texSky);
+
 	//set the factor
 	factor = 1;
 
@@ -217,11 +238,18 @@ void Solution::setSolution(Solution * _sol)
 void Solution::render()
 {
 	Matrix4f viewMat, projMat;
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	skybox.render(cam);
+
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.getTexHandle());
 	
 	shader.useProgram(1);
 
 	// OpenGL 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glDisable(GL_CULL_FACE);		// ensure that faces are displayed from every view point
 
 	// set the view model transformation
