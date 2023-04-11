@@ -275,6 +275,31 @@ void Solution::keyboard(unsigned char key, int x, int y)
 	case 'H':
 		handAdjust -= 0.5;
 		break;
+	//controls for scale factor
+	case 'j':
+		squish.incrementScaleMagnitude(-0.005, 0, 0);
+		break;
+	case 'J':
+		squish.incrementScaleMagnitude(0.005, 0, 0);
+		break;
+	case 'k':
+		squish.incrementScaleMagnitude(0, -0.005, 0);
+		break;
+	case 'K':
+		squish.incrementScaleMagnitude(0, 0.005, 0);
+		break;
+	case 'l':
+		squish.incrementScaleMagnitude(0, 0, -0.005);
+		break;
+	case 'L':
+		squish.incrementScaleMagnitude(0, 0, 0.005);
+		break;
+	case 'i':
+		squish.incrementScaleFactor(-0.5);
+		break;
+	case 'I':
+		squish.incrementScaleFactor(0.5);
+		break;
 	case '1':
 	case '2':
 	case '3':
@@ -357,7 +382,7 @@ void Solution::winResize(int width, int height)
 // update state of the objects
 int Solution::updateObjects(int numFrames)
 {
-	squish.updateSquish(3);
+	squish.updateSquish();
 	hand.setHeightPosition(squish.getTopPosition() + handAdjust);
 	glutPostRedisplay();
 	return 0;
