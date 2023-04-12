@@ -84,14 +84,16 @@ private:
 	float handAdjust;
 	int currX;
 	int currY;
-
 	char* objectFilePath;
+	int factor;		// speeds up actions
+	bool skyboxOn;
 	int numFrames;
-	static Solution *sol;
+
+	static Solution* sol;
 	Camera cam;
-	int factor;		// speeds up the actions
 	Light light;
 	Texture squishTexture, handTexture;
+	
 };
 
 #endif

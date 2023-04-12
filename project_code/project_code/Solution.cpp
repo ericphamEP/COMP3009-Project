@@ -37,6 +37,7 @@
 // MENU defines
 #define EXIT_PROGRAM 0
 #define TOGGLE_MODE 1
+#define TOGGLE_SKYBOX 12
 #define SQUISH_MIN_UP 2
 #define SQUISH_MIN_DOWN 3
 #define SQUISH_MAX_UP 4
@@ -166,12 +167,19 @@ int Solution::initSolution(char* objectFilePath, char* materialFilePath)
 	Indices ind;
 	pointLight point;
 
-	char texSky1[] = "./project_code/cubemap/px.png";
+	/*char texSky1[] = "./project_code/cubemap/px.png";
 	char texSky2[] = "./project_code/cubemap/nx.png";
 	char texSky3[] = "./project_code/cubemap/py.png";
 	char texSky4[] = "./project_code/cubemap/ny.png";
 	char texSky5[] = "./project_code/cubemap/pz.png";
-	char texSky6[] = "./project_code/cubemap/nz.png";
+	char texSky6[] = "./project_code/cubemap/nz.png";*/
+
+	char texSky1[] = "./project_code/cubemap/pad.jpg";
+	char texSky2[] = "./project_code/cubemap/pad.jpg";
+	char texSky3[] = "./project_code/cubemap/pad.jpg";
+	char texSky4[] = "./project_code/cubemap/pad.jpg";
+	char texSky5[] = "./project_code/cubemap/pad.jpg";
+	char texSky6[] = "./project_code/cubemap/pad.jpg";
 
 	char* texSky[6] = {
 		texSky1,
@@ -230,6 +238,7 @@ int Solution::initSolution(char* objectFilePath, char* materialFilePath)
 
 	//set the factor
 	factor = 1;
+	skyboxOn = true;
 
 	return 0;
 }
@@ -246,17 +255,11 @@ void Solution::render()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-	//glActiveTexture(GL_TEXTURE3);
-	//glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.getTexHandle());
-
-	skybox.render(cam);
+	if (skyboxOn) {
+		skybox.render(cam);
+	}
 	
 	shader.useProgram(1);
-
-	// OpenGL 
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glDisable(GL_CULL_FACE);		// ensure that faces are displayed from every view point
 
 	// set the view model transformation
 	viewMat = cam.getViewMatrix(NULL);	// get the camera view transformation
@@ -411,7 +414,6 @@ void Solution::mouse(int button, int state, int x, int y)
 // mouse motion handling function
 void Solution::mouseMove(int x, int y)
 {
-	//printf("mouse movement %d %d", x, y);
 	// handle horizontal movement
 	int deltaX = currX - x;
 	cam.moveRight((float).002 * factor * deltaX);
@@ -439,6 +441,7 @@ void Solution::createMenu(void) {
 	int menu_id = glutCreateMenu(menuFunCB);
 	glutAddSubMenu("Adjust Squishing", submenu_id);
 	glutAddMenuEntry("Toggle Auto-Squish Mode", TOGGLE_MODE);
+	glutAddMenuEntry("Toggle Skybox", TOGGLE_SKYBOX);
 	glutAddMenuEntry("Quit", EXIT_PROGRAM);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
@@ -454,6 +457,9 @@ void Solution::menuFun(int num)
 		break;
 	case TOGGLE_MODE:
 		squish.toggleAutoMode();
+		break;
+	case TOGGLE_SKYBOX:
+		skyboxOn = !skyboxOn;
 		break;
 	case SPEED_UP:
 		squish.incrementScaleFactor(0.5);
