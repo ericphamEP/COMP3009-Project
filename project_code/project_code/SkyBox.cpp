@@ -143,7 +143,7 @@ void SkyBox::render(Camera cam)
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	// ask opengl to use the skybox shader program
-	glUseProgram(skyboxShader.getProgId());		// alternatively one can use s.useProgram(1);
+	skyboxShader.useProgram(1);	// alternatively one can use s.useProgram(1);
 
 	modelMat = Matrix4f::identity();
 
@@ -166,6 +166,8 @@ void SkyBox::render(Camera cam)
 
 	
 	// set the texture sampler  in the shader
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, getTexHandle());
 	tex.setTextureSampler(skyboxShader, "texCube", GL_TEXTURE3);
 	
 	glBindVertexArray(vao);

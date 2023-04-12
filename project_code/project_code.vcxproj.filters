@@ -45,6 +45,9 @@
     <ClCompile Include="project_code\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="project_code\SkyBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="project_code\graphicsObject.h">
@@ -83,12 +86,21 @@
     <ClInclude Include="project_code\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="project_code\SkyBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="project_code\light.frag">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="project_code\light.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="project_code\skybox.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="project_code\skybox.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

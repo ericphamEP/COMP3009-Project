@@ -69,7 +69,12 @@ int Solution::initOpenGL()
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glDepthFunc(GL_LESS);
+	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CCW);
+	glCullFace(GL_FRONT);
 	glCullFace(GL_BACK);
+	glDisable(GL_CULL_FACE);
 	glutDisplayFunc(Solution::renderCB);
 	glutReshapeFunc(Solution::winResizeCB);
 	glutKeyboardFunc(Solution::keyboardCB);
@@ -241,10 +246,11 @@ void Solution::render()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	skybox.render(cam);
 
-	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.getTexHandle());
+	//glActiveTexture(GL_TEXTURE3);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.getTexHandle());
+
+	skybox.render(cam);
 	
 	shader.useProgram(1);
 

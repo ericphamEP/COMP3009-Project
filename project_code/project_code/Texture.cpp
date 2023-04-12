@@ -111,6 +111,7 @@ int Texture::loadTextureImages(char** texFileName)
 
 	if (texFileName == NULL) return(-1);
 	else for (i = 0; i < 6; i++) {
+		printf("Tex file %d: %s\n", i, texFileName[i]);
 		if (texFileName[i] == NULL) return(-1);
 	}
 
