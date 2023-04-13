@@ -391,10 +391,10 @@ Return: Vector3f - position
 Vector3f Camera::moveUp(float numUnits)
 {
 	float newPosY = position.y + numUnits;
-	if (newPosY > 80) {
-		newPosY = 80;
-	} else if (newPosY < -20) {
-		newPosY = -20;
+	if (newPosY > 100) {
+		newPosY = 100;
+	} else if (newPosY < 1) {
+		newPosY = 1;
 	}
 	// update the abs position
 	return changeAbsPosition(position.x, newPosY, position.z);

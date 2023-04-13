@@ -28,6 +28,7 @@
     <ClCompile Include="project_code\Solution.cpp" />
     <ClCompile Include="project_code\squish.cpp" />
     <ClCompile Include="project_code\stdafx.cpp" />
+    <ClCompile Include="project_code\surface.cpp" />
     <ClCompile Include="project_code\Texture.cpp" />
     <ClCompile Include="project_code\main.cpp" />
   </ItemGroup>
@@ -43,6 +44,7 @@
     <ClInclude Include="project_code\Solution.h" />
     <ClInclude Include="project_code\squish.h" />
     <ClInclude Include="project_code\stdafx.h" />
+    <ClInclude Include="project_code\surface.h" />
     <ClInclude Include="project_code\targetver.h" />
     <ClInclude Include="project_code\Texture.h" />
   </ItemGroup>

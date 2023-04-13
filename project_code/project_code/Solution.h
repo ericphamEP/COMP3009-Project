@@ -38,6 +38,7 @@
 #include "Hand.h"
 #include "Squish.h"
 #include "SkyBox.h"
+#include "surface.h"
 
 #include "camera.h"
 #include "Light.h"
@@ -81,17 +82,21 @@ private:
 	Hand hand;
 	Squish squish;
 	SkyBox skybox;
+	Surface surface;
 	float handAdjust;
 	int currX;
 	int currY;
-
 	char* objectFilePath;
+	int factor;		// speeds up actions
+	bool skyboxOn;
 	int numFrames;
-	static Solution *sol;
+
+	static Solution* sol;
 	Camera cam;
-	int factor;		// speeds up the actions
 	Light light;
-	Texture squishTexture, handTexture;
+
+	Texture squishTexture, handTexture, surfaceTexture;
+	
 };
 
 #endif

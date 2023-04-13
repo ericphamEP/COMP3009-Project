@@ -37,6 +37,7 @@
 // MENU defines
 #define EXIT_PROGRAM 0
 #define TOGGLE_MODE 1
+#define TOGGLE_SKYBOX 12
 #define SQUISH_MIN_UP 2
 #define SQUISH_MIN_DOWN 3
 #define SQUISH_MAX_UP 4
@@ -166,12 +167,19 @@ int Solution::initSolution(char* objectFilePath, char* materialFilePath)
 	Indices ind;
 	pointLight point;
 
-	char texSky1[] = "./project_code/cubemap/px.png";
+	/*char texSky1[] = "./project_code/cubemap/px.png";
 	char texSky2[] = "./project_code/cubemap/nx.png";
 	char texSky3[] = "./project_code/cubemap/py.png";
 	char texSky4[] = "./project_code/cubemap/ny.png";
 	char texSky5[] = "./project_code/cubemap/pz.png";
-	char texSky6[] = "./project_code/cubemap/nz.png";
+	char texSky6[] = "./project_code/cubemap/nz.png";*/
+
+	char texSky1[] = "./project_code/cubemap/pad.jpg";
+	char texSky2[] = "./project_code/cubemap/pad.jpg";
+	char texSky3[] = "./project_code/cubemap/pad.jpg";
+	char texSky4[] = "./project_code/cubemap/pad.jpg";
+	char texSky5[] = "./project_code/cubemap/pad.jpg";
+	char texSky6[] = "./project_code/cubemap/pad.jpg";
 
 	char* texSky[6] = {
 		texSky1,
@@ -203,11 +211,27 @@ int Solution::initSolution(char* objectFilePath, char* materialFilePath)
 
 	//create the hand object
 	hand.initGeom();
+	hand.setMaterial(
+		Vector3f(0.3, 0.3, 0.3),
+		Vector3f(0.75, 0.75, 0.75),
+		Vector3f(0.2, 0.2, 0.2),
+		Vector3f(0.5, 0.5, 0.5)
+	);
 	hand.setModelScale(2.5, 2.5, 2.5);
 	hand.setModelPosition(40, 0, 0);
 	hand.incrementModelRotations(90, 0, 270);
 	hand.createVAO(shader);
 	handAdjust = 0;
+
+	Surface::createSurface(1, 1, 0, 1, 0, 1, vtx, ind);
+	surface.setMaterial(
+		Vector3f(1.0, 1.0, 1.0),
+		Vector3f(0.01, 0.01, 0.01),
+		Vector3f(0.01, 0.01, 0.01),
+		Vector3f(0.0, 0.0, 0.0)
+	);
+	surface.setModelScale(500, 500, 500);
+	surface.createVAO(shader, vtx, ind);
 	
 	// set the camera initial position
 	cam.setCamera(Vector3f(0, 20, 100), Vector3f(0, 20, 0), Vector3f(0, 1, 0), 100, 0);
@@ -224,12 +248,14 @@ int Solution::initSolution(char* objectFilePath, char* materialFilePath)
 	//load the textures
 	squishTexture.loadTexture(materialFilePath, GL_TEXTURE_2D);
 	handTexture.loadTexture("./project_code/models/female-hand/textures/038F_05SET_04SHOT_DIFFUSE.png", GL_TEXTURE_2D);
+	surfaceTexture.loadTexture(texSky4, GL_TEXTURE_2D);
 
 	skybox.init(vtxSkyShader, fragSkyShader);
 	skybox.loadTextureImages(texSky);
 
 	//set the factor
 	factor = 1;
+	skyboxOn = true;
 
 	return 0;
 }
@@ -246,17 +272,11 @@ void Solution::render()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-	//glActiveTexture(GL_TEXTURE3);
-	//glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.getTexHandle());
-
-	skybox.render(cam);
+	if (skyboxOn) {
+		skybox.render(cam);
+	}
 	
 	shader.useProgram(1);
-
-	// OpenGL 
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glDisable(GL_CULL_FACE);		// ensure that faces are displayed from every view point
 
 	// set the view model transformation
 	viewMat = cam.getViewMatrix(NULL);	// get the camera view transformation
@@ -272,18 +292,24 @@ void Solution::render()
 	projMat = cam.getProjectionMatrix(NULL);
 	// move matrix to shader
 	shader.copyMatrixToShader(projMat, "projection");
+	
+	if (skyboxOn) {
+		// surface rendering
+		surfaceTexture.bindToTextureUnit(GL_TEXTURE1);
+		surfaceTexture.setTextureSampler(shader, "texSampler", GL_TEXTURE1);
+		surface.render(shader);
+	}
 
 	// squish object rendering
 	squishTexture.bindToTextureUnit(GL_TEXTURE1);
 	squishTexture.setTextureSampler(shader, "texSampler", GL_TEXTURE1);
-	
 	squish.render(shader);
 
 	// hand rendering
 	handTexture.bindToTextureUnit(GL_TEXTURE1);
 	handTexture.setTextureSampler(shader, "texSampler", GL_TEXTURE1);
-	
 	hand.render(shader);
+	
 
 	glutSwapBuffers();
 }
@@ -411,7 +437,6 @@ void Solution::mouse(int button, int state, int x, int y)
 // mouse motion handling function
 void Solution::mouseMove(int x, int y)
 {
-	//printf("mouse movement %d %d", x, y);
 	// handle horizontal movement
 	int deltaX = currX - x;
 	cam.moveRight((float).002 * factor * deltaX);
@@ -439,6 +464,7 @@ void Solution::createMenu(void) {
 	int menu_id = glutCreateMenu(menuFunCB);
 	glutAddSubMenu("Adjust Squishing", submenu_id);
 	glutAddMenuEntry("Toggle Auto-Squish Mode", TOGGLE_MODE);
+	glutAddMenuEntry("Toggle Skybox", TOGGLE_SKYBOX);
 	glutAddMenuEntry("Quit", EXIT_PROGRAM);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
@@ -454,6 +480,9 @@ void Solution::menuFun(int num)
 		break;
 	case TOGGLE_MODE:
 		squish.toggleAutoMode();
+		break;
+	case TOGGLE_SKYBOX:
+		skyboxOn = !skyboxOn;
 		break;
 	case SPEED_UP:
 		squish.incrementScaleFactor(0.5);
