@@ -62,12 +62,18 @@ GraphicsObject::GraphicsObject() :
 
 /***************************************************************************/
 
-
-
 GraphicsObject::~GraphicsObject()
 {
 }
 
+
+void GraphicsObject::setMaterial(Vector3f ambientMaterial, Vector3f diffuseMaterial, Vector3f specularMaterial, Vector3f interalRadiation)
+{
+	materials.ambientMaterial = ambientMaterial;
+	materials.diffuseMaterial = diffuseMaterial;
+	materials.specularMaterial = specularMaterial;
+	materials.interalRadiation = interalRadiation;
+}
 
 /***************************************************************************/
 
@@ -142,6 +148,83 @@ int GraphicsObject::createVAO(Shader shader)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices_tri.size() * sizeof(GLuint), m_indices_tri.data(), GL_STATIC_DRAW);
 	// store the number of indices
 	numIndices = m_indices_tri.size();
+
+	//end creation
+	glBindVertexArray(0);
+
+err:
+	return(rc);
+}
+
+
+int GraphicsObject::createVAO(Shader shader, Vertices vtx, Indices ind)
+{
+	int rc = 0;
+	Vertex v;
+
+	GLint location;		// location of the attributes in the shader;
+
+	//create vertex array object
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	//create vertex buffer object
+	glGenBuffers(1, &vtxVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, vtxVBO);
+	glBufferData(GL_ARRAY_BUFFER, vtx.size() * sizeof(Vertex), vtx.data(), GL_STATIC_DRAW);
+
+	//set the vertex position
+	location = glGetAttribLocation(shader.getProgId(), "vtxPos");
+	if (location == -1) {
+		rc = -1;
+		goto err;
+	}
+	glEnableVertexAttribArray(location);
+	glVertexAttribPointer(location, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, pos));
+
+	//set the vertex color
+	location = glGetAttribLocation(shader.getProgId(), "vtxCol");
+	if (location == -1) {
+		//rc = -2;
+		//goto err;
+	}
+	else {
+		glEnableVertexAttribArray(location);
+		glVertexAttribPointer(location, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, col));
+	}
+
+	//set the vertex normal
+	location = glGetAttribLocation(shader.getProgId(), "vtxNormal");
+	if (location == -1) {
+		rc = -3;
+		//DN	goto err;
+	}
+	else {
+		glEnableVertexAttribArray(location);
+		glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+	}
+
+	//set the vertex tex coordinates
+	location = glGetAttribLocation(shader.getProgId(), "vtxCoord");
+	if (location == -1) {
+		rc = -3;
+		//DN	goto err;
+	}
+	else {
+
+		glEnableVertexAttribArray(location);
+		//int relAddress = (char*)v.texCoord - (char*)&v;
+
+		//glVertexAttribPointer(location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)relAddress);
+		glVertexAttribPointer(location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
+	}
+
+	//create index buffer
+	glGenBuffers(1, &indVBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indVBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, ind.size() * sizeof(GLuint), ind.data(), GL_STATIC_DRAW);
+	// store the number of indices
+	numIndices = ind.size();
 
 	//end creation
 	glBindVertexArray(0);
@@ -237,8 +320,8 @@ int GraphicsObject::render(Matrix4f worldMat)
 }
 
 /*********************************************************************************/
-//rendering with a shader
 
+//rendering with a shader
 int GraphicsObject::render(Shader shader)
 {
 	Matrix4f rotMat;  // rotation matrix;

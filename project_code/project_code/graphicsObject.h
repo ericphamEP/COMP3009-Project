@@ -63,6 +63,7 @@ public:
 	virtual ~GraphicsObject();
 
 	int createVAO(Shader shader);
+	int createVAO(Shader shader, Vertices vtx, Indices ind);
 
 	virtual int render();
 	virtual int render(Matrix4f worldMat);
@@ -104,6 +105,7 @@ protected:
 	void computeModelMat();
 
 public:
+	void setMaterial(Vector3f ambientMaterial, Vector3f diffuseMaterial, Vector3f specularMaterial, Vector3f interalRadiation);
 	void setModelRotations(float rollAngle, float pitchAngle, float yawAngle);
 	void setModelPosition(Vector3f position);
 	void setModelPosition(float x, float y, float z);

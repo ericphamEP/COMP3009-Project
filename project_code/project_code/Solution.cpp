@@ -211,11 +211,27 @@ int Solution::initSolution(char* objectFilePath, char* materialFilePath)
 
 	//create the hand object
 	hand.initGeom();
+	hand.setMaterial(
+		Vector3f(0.3, 0.3, 0.3),
+		Vector3f(0.75, 0.75, 0.75),
+		Vector3f(0.2, 0.2, 0.2),
+		Vector3f(0.5, 0.5, 0.5)
+	);
 	hand.setModelScale(2.5, 2.5, 2.5);
 	hand.setModelPosition(40, 0, 0);
 	hand.incrementModelRotations(90, 0, 270);
 	hand.createVAO(shader);
 	handAdjust = 0;
+
+	Surface::createSurface(1, 1, 0, 1, 0, 1, vtx, ind);
+	surface.setMaterial(
+		Vector3f(1.0, 1.0, 1.0),
+		Vector3f(0.01, 0.01, 0.01),
+		Vector3f(0.01, 0.01, 0.01),
+		Vector3f(0.0, 0.0, 0.0)
+	);
+	surface.setModelScale(500, 500, 500);
+	surface.createVAO(shader, vtx, ind);
 	
 	// set the camera initial position
 	cam.setCamera(Vector3f(0, 20, 100), Vector3f(0, 20, 0), Vector3f(0, 1, 0), 100, 0);
@@ -232,6 +248,7 @@ int Solution::initSolution(char* objectFilePath, char* materialFilePath)
 	//load the textures
 	squishTexture.loadTexture(materialFilePath, GL_TEXTURE_2D);
 	handTexture.loadTexture("./project_code/models/female-hand/textures/038F_05SET_04SHOT_DIFFUSE.png", GL_TEXTURE_2D);
+	surfaceTexture.loadTexture(texSky4, GL_TEXTURE_2D);
 
 	skybox.init(vtxSkyShader, fragSkyShader);
 	skybox.loadTextureImages(texSky);
@@ -275,18 +292,24 @@ void Solution::render()
 	projMat = cam.getProjectionMatrix(NULL);
 	// move matrix to shader
 	shader.copyMatrixToShader(projMat, "projection");
+	
+	if (skyboxOn) {
+		// surface rendering
+		surfaceTexture.bindToTextureUnit(GL_TEXTURE1);
+		surfaceTexture.setTextureSampler(shader, "texSampler", GL_TEXTURE1);
+		surface.render(shader);
+	}
 
 	// squish object rendering
 	squishTexture.bindToTextureUnit(GL_TEXTURE1);
 	squishTexture.setTextureSampler(shader, "texSampler", GL_TEXTURE1);
-	
 	squish.render(shader);
 
 	// hand rendering
 	handTexture.bindToTextureUnit(GL_TEXTURE1);
 	handTexture.setTextureSampler(shader, "texSampler", GL_TEXTURE1);
-	
 	hand.render(shader);
+	
 
 	glutSwapBuffers();
 }
