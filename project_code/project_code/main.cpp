@@ -6,22 +6,24 @@
 
 int main(int argc, char* argv[])
 {
-	// Instruction: Set objectFilePath to path to .obj file and materialFilePath to corresponding material file (image texture)
+	// Instruction: Set path to .obj file (with line header 'obj') and corresponding material/image texture file (with line header 'mat') in modelpath.txt
 
-	//char objectFilePath[] = "./project_code//models/pikachu/source/model_170290017759.obj";
-	//char materialFilePath[] = "./project_code//models/pikachu/source/texture_170290017759.jpg";
-
-	//char objectFilePath[] = "./project_code//models/fat-pikachu/source/fat pikachu/pikachu gordo.obj";
-	//char materialFilePath[] = "./project_code//models/fat-pikachu/textures/uvs pikachu 3.png";
-
-	//char objectFilePath[] = ;
-	//char materialFilePath[] = ;
-
-	char objectFile[] = "./project_code//models/haggord-hagrid-hd-remake-joke/source/Haggord Sketchfab.obj";
-	char materialFile[] = "./project_code//models/haggord-hagrid-hd-remake-joke/textures/Hagrid_Coxinha_tex.png";
+	// Below: included models you can paste into modelpath.txt
+	// 
+	// Pikachu pillow
+	// Object file: obj ./project_code//models/pikachu/source/model_170290017759.obj
+	// Texture: mat ./project_code//models/pikachu/source/texture_170290017759.jpg
+	// 
+	// Fat Pikachu
+	// Object file: obj ./project_code//models/fat-pikachu/source/fat pikachu/pikachu gordo.obj
+	// Texture: mat ./project_code//models/fat-pikachu/textures/uvs pikachu 3.png
+	// 
+	// Low Poly Hagrid
+	// Object file: obj ./project_code//models/haggord-hagrid-hd-remake-joke/source/Haggord Sketchfab.obj
+	// Texture: mat ./project_code//models/haggord-hagrid-hd-remake-joke/textures/Hagrid_Coxinha_tex.png
 	
-	char* objectFilePath = objectFile;
-	char* materialFilePath = materialFile;
+	char* objectFilePath = NULL;
+	char* materialFilePath = NULL;
 
 
 	std::ifstream in("./project_code//models/modelpath.txt", std::ios::in);
