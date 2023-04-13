@@ -110,4 +110,12 @@
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="README.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="project_code\models\modelpath.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

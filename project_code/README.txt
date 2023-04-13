@@ -21,10 +21,11 @@ Execution instructions
 After unzipping the project zip folder, the project can be opened at “project_code.sln”. All source files are located in the “project_code” directory.
 
 Setting the input 3D model: The program will read one .obj file and one texture file (an image such as .png or .jpg) to use as the primary model that animations are performed on. To set these files for the program to read them, follow these instructions:
-  - Open “main.cpp” from the source files
-  - Set the variable “objectFilePath” to the path of the .obj file
-  - Set the variable “materialFilePath” to the path of the texture image file
-  - Run the program
+  - Open the file "modelpath.txt" in the folder ./project_code/models
+  - Insert the path to your desired .obj file after "obj "
+  - Insert the path to the associated texture after "mat "
+	- Note: do not include quotation marks in the path, (ideally path is relative to ./project_code)
+  - Once this is complete it should load the correct model according to your input
 
 Note: The project comes with three default models to test with, but will work with any 3D model as long as it is defined by a single .obj file and single texture image file, and the object does not exceed a million vertices or faces.
 

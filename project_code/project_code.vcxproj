@@ -54,6 +54,10 @@
     <None Include="project_code\skybox.frag" />
     <None Include="project_code\skybox.vert" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="project_code\models\modelpath.txt" />
+    <Text Include="README.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
