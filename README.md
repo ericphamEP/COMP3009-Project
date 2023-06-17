@@ -9,3 +9,11 @@ This project aims to simulate the action of ‘petting’ a chosen 3D object wit
 ![alt text](screenshots/main.png)
 
 ![alt text](screenshots/squish.png)
+
+# Models
+
+The 3D models used are for testing purposes and not created by us. They are from these websites:
+https://sketchfab.com/3d-models/female-hand-3e9b8ad1942048e3a267d92fb1124d46
+https://sketchfab.com/3d-models/fat-pikachu-89dfdd5c1aa2458385dfdc327e418b19
+https://sketchfab.com/3d-models/pikachu-6ff719b49e754e3f888f4a429f5e499a
+https://sketchfab.com/3d-models/haggord-hagrid-hd-remake-joke-25d5631b99ac45dc9b6786a4a6333899
