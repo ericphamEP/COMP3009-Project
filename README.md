@@ -4,7 +4,7 @@ This school project aims to simulate the action of ‘petting’ a chosen 3D obj
 
 # Development
 
-This project uses C++, OpenGL, and GLSL. It features its own custom model importing, rendering and shaders.
+This Microsoft Visual Studio project uses C++, OpenGL, and GLSL. It features its own custom model importing, rendering and shaders.
 
 # Screenshots
 
