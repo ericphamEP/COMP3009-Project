@@ -4,6 +4,8 @@ This project aims to simulate the action of ‘petting’ a chosen 3D object wit
 
 # Screenshots
 
+![alt text](screenshots/recording.gif)
+
 ![alt text](screenshots/main.png)
 
 ![alt text](screenshots/squish.png)
